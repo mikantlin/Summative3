@@ -2,7 +2,26 @@
 @import 'bootstrap/bootstrap';
 
 // your styles here (note that you can use Bootstrap variables from _variables.scss in here too)
-.example {
-  color: red;
-  background-color: $purple;
+.carousel-item {
+  height: 50vh;
+}
+
+.slide1 {
+  background-color: orange;
+}
+
+.slide2 {
+  background-color: skyblue;
+}
+
+.slide3 {
+  background-color: rebeccapurple;
+}
+
+.slide4 {
+  background-color: limegreen;
+}
+
+.slide5 {
+  background-color: tomato;
 }
