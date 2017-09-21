@@ -21,20 +21,11 @@
     <div class="carousel-inner">
       <div class="carousel-item slide1 active">
         <div class="container">
-          <div class="row">
-            <div class="col-8 pt-5">
-              <h1>Maria Svarbova<small class="text-muted">Photographer - Bratislava, Slovakia - www.mariasvarbova.com</small></h1>
-              <p class="lead">
-                Mária Švarbová was born in 1988 in Slovakia. She studied conservation - restoration and archeology, however since 2010 she has been dedicated to photography as her main tool of artistic expression. She lives and works in Bratislava, Slovakia.
-              </p>
-              <p>
-                Early on, her photographic work moved from traditional portraits to capture wider topics, generating works with unmistakably characteristic atmosphere...
-              </p>
-            </div>
+          <div class="row user">
           </div>
         </div>
       </div>
-      <div class="carousel-item slide2">
+      <!-- <div class="carousel-item slide2">
         <div class="container">
           <div class="row">
             <div class="col pt-5">
@@ -69,67 +60,44 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 
   <div class="container">
-    <div class="card-columns">
-      <div class="card">
-        <img class="card-img" src="http://placehold.it/800x400" alt="Card image">
-        <div class="card-img-overlay">
-          <h4 class="card-title text-center">Card title</h4>
-          <p class="card-text text-center">Last updated 3 mins ago</p>
-        </div>
-      </div>
-      <div class="card">
-        <img class="card-img" src="http://placehold.it/800x400" alt="Card image">
-        <div class="card-img-overlay">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">Last updated 3 mins ago</p>
-        </div>
-      </div>
-      <div class="card">
-        <img class="card-img" src="http://placehold.it/800x400" alt="Card image">
-        <div class="card-img-overlay">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">Last updated 3 mins ago</p>
-        </div>
-      </div>
-      <div class="card">
-        <img class="card-img" src="http://placehold.it/800x400" alt="Card image">
-        <div class="card-img-overlay">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">Last updated 3 mins ago</p>
-        </div>
-      </div>
-      <div class="card">
-        <img class="card-img" src="http://placehold.it/800x400" alt="Card image">
-        <div class="card-img-overlay">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">Last updated 3 mins ago</p>
-        </div>
-      </div>
-      <div class="card">
-        <img class="card-img" src="http://placehold.it/800x400" alt="Card image">
-        <div class="card-img-overlay">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">Last updated 3 mins ago</p>
-        </div>
-      </div>
-      <div class="card">
-        <img class="card-img" src="http://placehold.it/800x400" alt="Card image">
-        <div class="card-img-overlay">
-          <h4 class="card-title">Card title</h4>
-          <p class="card-text">Last updated 3 mins ago</p>
-        </div>
-      </div>
+    <div class="row projects">
+      <h1 class="col-12">Featured</h1>
     </div>    
   </div>
+
+  <script type="text/template" id="user-info-template">
+    <div class="col-sm-12 col-md-7 py-5 userInfo">
+      <h1>{{name}}</h1>
+      {{#each descriptions}}
+      <h2>{{@key}}</h2>
+      <p>{{this}}</p>
+      {{/each}}
+    </div>
+  </script>
+
+  <script type="text/template" id="project-list-template">
+    <div class="card col-md-6 col-lg-4 mb-5">
+        <img class="card-img" src="{{covers['404']}}" alt="{{name}}">
+        <a class="card-link" href="">
+          <div class="card-img-overlay text-center">
+            <h4 class="card-title text-center">{{name}}</h4>
+            <p class="card-text">{{fields[0]}}</p>
+            <p class="card-text text-center">{{js 'moment.unix(this.published_on).fromNow()'}}</p>
+          </div>
+        </a>
+    </div>
+  </script>
 
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+  <script src="vendor/template7/template7.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>

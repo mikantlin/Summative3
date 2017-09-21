@@ -2,7 +2,14 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:300,700');
 
 // Override Bootstrap's font styling
-$font-family-sans-serif:  'Lato', sans-serif;
-$font-family-base:        $font-family-sans-serif;
-$headings-font-weight:    700;
+$font-family-sans-serif:    'Lato', sans-serif;
+$font-family-base:          $font-family-sans-serif;
+$headings-font-weight:      700;
 
+// adjust card edges
+$card-inner-border-radius:  .1rem;
+$card-border-width:         0;
+
+// sort out link colours
+$link-color:                inherit;
+$link-hover-color:          inherit;

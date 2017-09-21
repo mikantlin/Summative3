@@ -1,3 +1,6 @@
+// credits
+// headshot: https://unsplash.com/search/photos/headshot?photo=1nizzZ-SFw4
+
 @import 'theme';
 @import 'bootstrap/bootstrap';
 
@@ -6,8 +9,51 @@
   height: 50vh;
 }
 
+// hero slide
 .slide1 {
-  background-color: orange;
+  background-color: #000;
+
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    background-image: url('../img/janko-ferlic-165856-resize.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    opacity: .6;
+    filter: blur(10px);
+    transition: ease-out .25s;
+  }
+
+  .userInfo {
+    color: #ccc;
+    filter: none;
+    opacity: 1;
+    transition: ease-out .25s;
+  }
+
+  &:hover {
+    &::before {
+      filter: none;
+      opacity: .8;
+      transition: ease-in .3s;
+    }
+
+    .userInfo {
+      filter: blur(5px);
+      opacity: .8;
+      transition: ease-in .3s;
+    }
+  }
+
+  
 }
 
 .slide2 {
@@ -24,4 +70,41 @@
 
 .slide5 {
   background-color: tomato;
+}
+
+// projects list
+
+.projects {
+  opacity: 1;
+  transition: ease-out .25s;
+  
+  .card {
+    overflow: hidden;
+
+    .card-img-overlay {
+      filter: blur(3px);
+      opacity: 0;
+      transition: ease-out .25s;
+    }
+
+    &:hover {
+      .card-img-overlay {
+        filter: none;
+        opacity: 1;
+        transition: ease-in .3s;
+      }
+    }
+  }
+
+  &:hover {
+
+    .card {
+      opacity: 0.2;
+      transition: ease-in .3s;  
+    }
+
+    .card:hover {
+      opacity: 1;
+    }
+  }
 }
