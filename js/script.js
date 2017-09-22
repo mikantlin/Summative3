@@ -1,10 +1,11 @@
 const behanceAPI = 'TJWj9OP9YyUJxO7X1cD2Dovr6e5NeOWJ';
-const username = 'Aria_Baro';
+const username = 'tinapicardphoto';
 
 $(function() {
 
   // jquery coding inside this function
   let userURL = `https://api.behance.net/v2/users/${username}?client_id=${behanceAPI}`;
+  console.log(userURL);
 
   // prepare templates for user info and projects
   let userInfoHTML = $('#user-info-template').text();

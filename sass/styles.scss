@@ -1,10 +1,8 @@
-// credits
-// headshot: https://unsplash.com/search/photos/headshot?photo=1nizzZ-SFw4
-
 @import 'theme';
 @import 'bootstrap/bootstrap';
 
 // your styles here (note that you can use Bootstrap variables from _variables.scss in here too)
+// Mobile styles
 .carousel-item {
   height: 50vh;
 }
@@ -57,7 +55,7 @@
 }
 
 .slide2 {
-  background-color: skyblue;
+  background-color: $twitter-blue;
 }
 
 .slide3 {
@@ -75,36 +73,32 @@
 // projects list
 
 .projects {
-  opacity: 1;
-  transition: ease-out .25s;
-  
   .card {
+    color: #fff;
     overflow: hidden;
 
     .card-img-overlay {
-      filter: blur(3px);
       opacity: 0;
+      background-color: rgba(0,0,0,0);
+      transition: ease-out .25s;
+    }
+
+    .card-img {
+      filter: none;
       transition: ease-out .25s;
     }
 
     &:hover {
       .card-img-overlay {
-        filter: none;
         opacity: 1;
+        background-color: rgba(0,0,0,.5);
         transition: ease-in .3s;
       }
-    }
-  }
+      .card-img {
+        filter: blur(5px);
+        transition: ease-in .3s;
+      }
 
-  &:hover {
-
-    .card {
-      opacity: 0.2;
-      transition: ease-in .3s;  
-    }
-
-    .card:hover {
-      opacity: 1;
     }
   }
 }
