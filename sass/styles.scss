@@ -3,12 +3,10 @@
 
 // your styles here (note that you can use Bootstrap variables from _variables.scss in here too)
 // Mobile styles
-.carousel-item {
+.hero {
+  position: relative;
   height: 50vh;
-}
-
-// hero slide
-.slide1 {
+  padding-bottom: 5em;
   background-color: #000;
 
   &::before {
