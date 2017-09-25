@@ -11,24 +11,13 @@
 <body>
   
   <header class="jumbotron hero">
-    <div class="container hero__text">
-      <div class="row">
-        <div class="col-12">
-          <h1 class="hero__name display-1"></h1>
-          <hr>
-        </div>
-        <div class="col-12 align-right">
-          <p>Test text</p>
-        </div>
-      </div>
-    </div>
   </header>
 
   <section class="about mb-4">
     <div class="container">
       <div class="row">
         <div class="col-lg-6">
-          <img class="img-fluid" src="http://placehold.it/1000x600/eeeeee" alt="">
+          <img class="img-fluid mb-4" src="https://placehold.it/1000x600/eeeeee" alt="">
         </div>
         <div class="col-lg-6 blurb">
         </div>
@@ -37,8 +26,8 @@
   </section>
   
   <div class="container">
-    <div class="row projects">
-      <h1 class="col-12">Portfolio</h1>
+    <div class="row projects px-3">
+      <h1 class="col-12 px-0">Portfolio</h1>
     </div>
   </div>
 
@@ -51,10 +40,21 @@
     </div>
   </footer>
   
+  <script type="text/template" id="hero-template">
+    <div class="container hero__text">
+      <div class="row">
+        <div class="col-12 align-bottom">
+          <h1 class="hero__header display-1 mb-1">{{display_name}}</h1>
+          <hr class="my-0">
+          <p class="mt-2 hero__subheader">{{join fields delimiter=" - "}}</p>
+        </div>
+      </div>
+    </div>
+  </script>
+
   <script type="text/template" id="blurb-template">
-      {{#each descriptions}}
-      <h2 class="display-5">{{@key}}</h2>
-      <hr class="mb-3 mt-0">
+      {{#each sections}}
+      <h2>{{@key}}</h2>
       <p>{{this}}</p>
       {{/each}}
   </script>
@@ -64,9 +64,10 @@
         <img class="card-img" src="{{covers['404']}}" alt="{{name}}">
         <a class="card-link" href="">
           <div class="card-img-overlay text-center d-flex align-items-center justify-content-center flex-column">
-            <h4 class="card-title text-center">{{name}}</h4>
+            <h4 class="card-title text-center mb-0">{{name}}</h4>
             <p class="card-text">{{fields[0]}}</p>
-            <p class="card-text text-center">{{js 'moment.unix(this.published_on).fromNow()'}}</p>
+            <hr class="my-0">
+            <p class="card-text text-center my-0">{{js 'moment.unix(this.published_on).fromNow()'}}</p>
           </div>
         </a>
     </div>

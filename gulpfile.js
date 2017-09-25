@@ -1,10 +1,11 @@
 'use strict';
  
-let gulp = require('gulp');
-let sass = require('gulp-sass');
-let postcss = require('gulp-postcss');
-let sourcemaps = require('gulp-sourcemaps');
-let autoprefixer = require('autoprefixer');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const sourcemaps = require('gulp-sourcemaps');
+const postcss = require('gulp-postcss');
+const autoprefixer = require('autoprefixer');
+const browserSync = require('browser-sync');
 
 gulp.task('sass', function () {
   return gulp.src('./sass/styles.scss')
@@ -14,7 +15,19 @@ gulp.task('sass', function () {
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./css'));
 });
- 
-gulp.task('sass:watch', function () {
-  gulp.watch('./sass/**/*.scss', ['sass']);
+
+gulp.task('browserSync', () => {
+  browserSync.init({
+    server: {
+      baseDir: './',
+    },
+    port: 3030,
+    https: true,
+  })
+});
+
+gulp.task('watch', ['sass','browserSync'], function() {
+  gulp.watch('./sass/**/*.scss', ['sass', browserSync.reload]);
+  gulp.watch('./*.html', browserSync.reload);
+  gulp.watch('./js/**/*.js', browserSync.reload);
 });

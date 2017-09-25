@@ -4,6 +4,9 @@ const username = 'tinapicardphoto';
 $(function() {
 
   // Template7 templates
+  let heroHTML = $('#hero-template').text();
+  let heroTemplate = Template7(heroHTML).compile();
+
   let blurbHTML = $('#blurb-template').text();
   let blurbTemplate = Template7(blurbHTML).compile();
 
@@ -22,16 +25,10 @@ $(function() {
 
       let data = res.user;
 
-      let user = {
-        name: data.display_name,
-        location: data.location,
-        descriptions: data.sections,
-        headshot: Object.values(data.images).pop()
-      };
+      let hero = heroTemplate(data);
+      $('.hero').append(hero);
 
-      $('.hero__name').text(user.name);
-
-      let blurb = blurbTemplate(user);
+      let blurb = blurbTemplate(data);
       $('.blurb').append(blurb);
       
       let projectsURL = `https://api.behance.net/v2/users/${username}/projects?client_id=${behanceAPI}`;
