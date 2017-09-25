@@ -3,16 +3,16 @@ const username = 'tinapicardphoto';
 
 $(function() {
 
-  // jquery coding inside this function
-  let userURL = `https://api.behance.net/v2/users/${username}?client_id=${behanceAPI}`;
-  console.log(userURL);
-
-  // prepare templates for user info and projects
-  let userInfoHTML = $('#user-info-template').text();
-  let userInfoTemplate = Template7(userInfoHTML).compile();
+  // Template7 templates
+  let blurbHTML = $('#blurb-template').text();
+  let blurbTemplate = Template7(blurbHTML).compile();
 
   let projectListHTML = $('#project-list-template').text();
   let projectListTemplate = Template7(projectListHTML).compile();  
+  
+  // jquery coding inside this function
+  let userURL = `https://api.behance.net/v2/users/${username}?client_id=${behanceAPI}`;
+  console.log(userURL);
   
   $.ajax({
     cache: true,
@@ -29,8 +29,10 @@ $(function() {
         headshot: Object.values(data.images).pop()
       };
 
-      let userInfo = userInfoTemplate(user);
-      $('.user').append(userInfo);
+      $('.hero__name').text(user.name);
+
+      let blurb = blurbTemplate(user);
+      $('.blurb').append(blurb);
       
       let projectsURL = `https://api.behance.net/v2/users/${username}/projects?client_id=${behanceAPI}`;
       console.log(projectsURL);

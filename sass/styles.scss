@@ -2,12 +2,17 @@
 @import 'bootstrap/bootstrap';
 
 // your styles here (note that you can use Bootstrap variables from _variables.scss in here too)
-// Mobile styles
 .hero {
   position: relative;
   height: 50vh;
   padding-bottom: 5em;
   background-color: #000;
+  overflow: hidden;
+
+  hr {
+    margin-top: 0;
+    border-top: 1px solid rgba(255,255,255,1);
+  }
 
   &::before {
     content: '';
@@ -28,8 +33,8 @@
     transition: ease-out .25s;
   }
 
-  .userInfo {
-    color: #ccc;
+  .hero__text {
+    color: #fff;
     filter: none;
     opacity: 1;
     transition: ease-out .25s;
@@ -42,34 +47,15 @@
       transition: ease-in .3s;
     }
 
-    .userInfo {
+    .hero__text {
       filter: blur(5px);
       opacity: .8;
       transition: ease-in .3s;
     }
   }
-
-  
-}
-
-.slide2 {
-  background-color: $twitter-blue;
-}
-
-.slide3 {
-  background-color: rebeccapurple;
-}
-
-.slide4 {
-  background-color: limegreen;
-}
-
-.slide5 {
-  background-color: tomato;
 }
 
 // projects list
-
 .projects {
   .card {
     color: #fff;
@@ -96,7 +82,6 @@
         filter: blur(5px);
         transition: ease-in .3s;
       }
-
     }
   }
 }

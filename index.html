@@ -10,11 +10,32 @@
 </head>
 <body>
   
-  <div class="jumbotron jumbotron-fluid hero">
-    <div class="container user">
+  <header class="jumbotron hero">
+    <div class="container hero__text">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="hero__name display-1"></h1>
+          <hr>
+        </div>
+        <div class="col-12 align-right">
+          <p>Test text</p>
+        </div>
+      </div>
     </div>
-  </div>
+  </header>
 
+  <section class="about mb-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <img class="img-fluid" src="http://placehold.it/1000x600/eeeeee" alt="">
+        </div>
+        <div class="col-lg-6 blurb">
+        </div>
+      </div>
+    </div>
+  </section>
+  
   <div class="container">
     <div class="row projects">
       <h1 class="col-12">Portfolio</h1>
@@ -25,24 +46,21 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          This is a test
         </div>
       </div>
     </div>
   </footer>
   
-  <script type="text/template" id="user-info-template">
-    <div class="col-sm-12 col-md-7 py-5 userInfo">
-      <h1 class="display-3">{{name}}</h1>
-      <hr class="my-4">
+  <script type="text/template" id="blurb-template">
       {{#each descriptions}}
+      <h2 class="display-5">{{@key}}</h2>
+      <hr class="mb-3 mt-0">
       <p>{{this}}</p>
       {{/each}}
-    </div>
   </script>
 
   <script type="text/template" id="project-list-template">
-    <div class="card col-md-6 col-lg-3 mb-5">
+    <div class="card col-md-6 col-lg-4 px-0">
         <img class="card-img" src="{{covers['404']}}" alt="{{name}}">
         <a class="card-link" href="">
           <div class="card-img-overlay text-center d-flex align-items-center justify-content-center flex-column">
