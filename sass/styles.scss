@@ -9,7 +9,7 @@
   overflow: hidden;
 
   @include media-breakpoint-up(sm) {
-    height: 50vh;
+    height: 40vh;
   }
 
   &__header {
@@ -56,7 +56,7 @@
     background-position: right center;
 
     opacity: .6;
-    filter: blur(3px);
+    filter: blur(10px);
     transition: ease-out .25s;
   }
 
@@ -73,6 +73,21 @@
       transition: ease-in .3s;
     }
   }
+}
+
+// about
+
+// statistics
+.stats {
+  background-color: #ccc;
+  @include media-breakpoint-up(sm) {
+    height: 50vh;
+  }
+}
+
+#compare {
+  height: 300px;
+  border: 1px solid orange;
 }
 
 // projects list
@@ -104,4 +119,9 @@
       }
     }
   }
+}
+
+footer {
+  background-color: #999;
+  height: 20vh;
 }

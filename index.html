@@ -13,13 +13,26 @@
   <header class="jumbotron hero">
   </header>
 
-  <section class="about mb-4">
+  <section class="about mb-2">
     <div class="container">
       <div class="row">
         <div class="col-lg-6">
           <img class="img-fluid mb-4" src="https://placehold.it/1000x600/eeeeee" alt="">
         </div>
         <div class="col-lg-6 blurb">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats py-5 mb-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 chart-text">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Error provident quod officia consequatur eaque laborum dolor officiis earum porro, autem ipsam laudantium maxime facere minima debitis est tempore. Enim, iusto.
+        </div>
+        <div class="col-md-4 chart">
+          <svg id="compare" viewbox="0 0 300 300"></svg>
         </div>
       </div>
     </div>
@@ -31,7 +44,7 @@
     </div>
   </div>
 
-  <footer class="footer">
+  <footer class="footer mt-5">
     <div class="container">
       <div class="row">
         <div class="col">
@@ -53,10 +66,12 @@
   </script>
 
   <script type="text/template" id="blurb-template">
-      {{#each sections}}
+    {{#each sections}}
+    {{#js_if "@key !== 'Contact'"}}
       <h2>{{@key}}</h2>
       <p>{{this}}</p>
-      {{/each}}
+    {{/js_if}}
+    {{/each}}
   </script>
 
   <script type="text/template" id="project-list-template">
@@ -78,6 +93,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
   <script src="vendor/template7/template7.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>

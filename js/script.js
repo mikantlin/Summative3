@@ -1,5 +1,8 @@
 const behanceAPI = 'TJWj9OP9YyUJxO7X1cD2Dovr6e5NeOWJ';
 const username = 'tinapicardphoto';
+const otherUser2 = 'ilonaveresk'; 
+const otherUser3 = 'andrejosselin'; 
+const otherUser4 = 'Carlaveggio';
 
 $(function() {
 
@@ -17,6 +20,7 @@ $(function() {
   let userURL = `https://api.behance.net/v2/users/${username}?client_id=${behanceAPI}`;
   console.log(userURL);
   
+/*
   $.ajax({
     cache: true,
     url: userURL,
@@ -49,5 +53,46 @@ $(function() {
       });
 
     }
-  });  
+  });
+*/
+
+  var skills = [
+    {name: 'HTML',value: 90},
+    {name: 'CSS',value: 85},
+    {name: 'Design',value: 70},
+    {name: 'UX',value: 60},
+    {name: 'JS',value: 65},
+  ];
+  
+  // chart stuff
+  // build a colour generator - d3 will map data to particular colours
+  let colourGen = d3.scaleOrdinal(d3.schemeSet2);
+  
+  // select a chart
+  var chart = d3.select('#compare')
+                .append('g')
+                  .attr('transform','translate(25,25)');
+  
+  var bars = chart.selectAll('rect').data(skills);
+  
+  bars.enter()
+      .append('rect')
+  
+        // set colour
+        .style('fill', function(d,i){ return colourGen(i) })
+  
+        // set initial states for x, y co-ordinates, width and height
+        .attr('class','bar')
+        .attr('x', function(d,i) { return i * 30 })
+        .attr('y', 25)
+        .attr('width', 20)
+        .attr('height', function(d) { return d.value});
+  
+        // .transition()
+        // .duration(1000)
+  
+        // // transition end states
+        // .attr('y', function(d) { return 300 - d.value * 5 })
+        // .attr('height', function(d) { return d.value * 5 });
 });
+
