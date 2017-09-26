@@ -60,7 +60,6 @@ $(function() {
     {name: 'HTML',value: 90},
     {name: 'CSS',value: 85},
     {name: 'Design',value: 70},
-    {name: 'UX',value: 60},
     {name: 'JS',value: 65},
   ];
   
@@ -71,7 +70,7 @@ $(function() {
   // select a chart
   var chart = d3.select('#compare')
                 .append('g')
-                  .attr('transform','translate(25,25)');
+                  .attr('transform','translate(15,15)');
   
   var bars = chart.selectAll('rect').data(skills);
   
@@ -83,16 +82,16 @@ $(function() {
   
         // set initial states for x, y co-ordinates, width and height
         .attr('class','bar')
-        .attr('x', function(d,i) { return i * 30 })
-        .attr('y', 25)
-        .attr('width', 20)
-        .attr('height', function(d) { return d.value});
+        .attr('x', function(d,i) { return i * 70 })
+        .attr('y', 270)
+        .attr('width', 50)
+        .attr('height', 0)
   
-        // .transition()
-        // .duration(1000)
+        .transition()
+        .duration(1000)
   
         // // transition end states
-        // .attr('y', function(d) { return 300 - d.value * 5 })
-        // .attr('height', function(d) { return d.value * 5 });
+        .attr('y', function(d) { return 270 - d.value * 3 })
+        .attr('height', function(d) { return d.value * 3 });
 });
 
