@@ -6,6 +6,8 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">  
+  <link href="vendor/swiper/css/swiper.min.css" rel="stylesheet" type="text/css">  
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -54,6 +56,23 @@
     </div>
   </footer>
   
+  <div class="portfolio-modal modal fade" id="portfolioModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="close-modal" data-dismiss="modal">
+            <div class="lr">
+              <div class="rl"></div>
+            </div>
+          </div>
+          <div class="project-content">
+            <!-- Project details loaded here via template7 -->
+          </div>
+        </div>
+      </div>
+    </div>
+    </script>
+  
+  <!-- Template7 Templates -->
   <script type="text/template" id="hero-template">
     <div class="container hero__text">
       <div class="row">
@@ -78,7 +97,7 @@
   <script type="text/template" id="project-list-template">
     <div class="card col-md-6 col-lg-4 px-0">
         <img class="card-img" src="{{covers['404']}}" alt="{{name}}">
-        <a class="card-link" href="">
+        <a class="card-link" data-toggle="modal" href="#portfolioModal" data-projectid="{{id}}">
           <div class="card-img-overlay text-center d-flex align-items-center justify-content-center flex-column">
             <h4 class="card-title text-center mb-0">{{name}}</h4>
             <p class="card-text">{{fields[0]}}</p>
@@ -89,6 +108,34 @@
     </div>
   </script>
 
+  <script type="text/template" id="modal-template">
+    <div class="modal-body">
+      <button class="btn btn-primary" data-dismiss="modal" type="button">
+          <i class="fa fa-times"></i>
+      </button>
+      <!-- Project Details Go Here -->
+      <h2>{{name}}</h2>
+      <div class="swiper-container">
+          <!-- Additional required wrapper -->
+          <div class="swiper-wrapper">
+            <!-- Slides -->
+            {{#each modules}}
+              {{#js_if "this.type === 'image'"}}
+                <div class="swiper-slide d-flex align-items-center">
+                  <img src="{{src}}" class="img-fluid mx-auto" alt="{{../name}} - {{@index}}">
+                </div>
+              {{/js_if}}
+            {{/each}}
+          </div>
+          
+          <!-- If we need navigation buttons -->
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+      </div>
+    </div>
+  </script>
+  
+  <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="vendor/jalc/jalc.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
@@ -97,6 +144,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="vendor/swiper/js/swiper.jquery.min.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>

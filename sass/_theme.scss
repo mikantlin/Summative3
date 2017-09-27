@@ -8,21 +8,25 @@ $twitter-blue: rgb(29,161,242);
 // Import custom fonts from Google
 @import url('https://fonts.googleapis.com/css?family=Lato:300,700');
 
-// Override Bootstrap's font styling
+// Font stuff
 $font-family-sans-serif:    'Lato', sans-serif;
 $font-family-base:          $font-family-sans-serif;
 $headings-font-weight:      700;
 
-// adjust card edges
+// card stuff
 $card-inner-border-radius:  .1rem;
 $card-border-width:         0;
 
-// sort out link colours
+// link stuff
 $link-color:                    inherit;
 $link-hover-color:              inherit;
 
-// border-radius
+// border stuff
 $border-radius-lg:          0;
 
-$hr-border-width: 2px;
-$hr-border-color: #fff;
+// horizontal rule stuff
+$hr-border-width:           2px;
+$hr-border-color:           #fff;
+
+// modal stuff
+$modal-md:                  90vw;
