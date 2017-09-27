@@ -2,11 +2,6 @@
 @import 'bootstrap/bootstrap';
 
 // your styles here (note that you can use Bootstrap variables from _variables.scss in here too)
-
-.swiper-container {
-  height: 80vh;
-}
-
 .hero {
   position: relative;
   background-color: #000;
@@ -89,30 +84,32 @@
 // projects list
 .projects {
   .card {
+    height: 18em;
     color: #fff;
     overflow: hidden;
+    transition: ease-out .25s;
+
+    @include media-breakpoint-up(sm) {
+      height: 30em;
+    }
 
     .card-img-overlay {
-      opacity: 0;
+      padding: 0;
+      margin: $card-img-overlay-padding;
       background-color: rgba(0,0,0,0);
-      transition: ease-out .25s;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
     }
+  }
 
-    .card-img {
-      filter: none;
-      transition: ease-out .25s;
-    }
+  &:hover .card {
+    filter: blur(3px);
+    transition: ease-in .3s;
 
     &:hover {
-      .card-img-overlay {
-        opacity: 1;
-        background-color: rgba(0,0,0,.5);
-        transition: ease-in .3s;
-      }
-      .card-img {
-        filter: blur(5px);
-        transition: ease-in .3s;
-      }
+      filter: none;
+      opacity: 1;
     }
   }
 }

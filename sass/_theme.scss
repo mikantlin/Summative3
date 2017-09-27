@@ -14,12 +14,13 @@ $font-family-base:          $font-family-sans-serif;
 $headings-font-weight:      700;
 
 // card stuff
-$card-inner-border-radius:  .1rem;
 $card-border-width:         0;
+$card-border-radius:        2px;
+
 
 // link stuff
-$link-color:                    inherit;
-$link-hover-color:              inherit;
+$link-color:                inherit;
+$link-hover-color:          inherit;
 
 // border stuff
 $border-radius-lg:          0;

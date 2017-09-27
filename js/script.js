@@ -1,142 +1,8 @@
+// config variables
 const behanceAPI = 'TJWj9OP9YyUJxO7X1cD2Dovr6e5NeOWJ';
 const photographers = ['tinapicardphoto','ilonaveresk','andrejosselin','Carlaveggio'];
 
-$(function() {
-
-  // Template7 templates
-  let heroHTML = $('#hero-template').text();
-  let heroTemplate = Template7(heroHTML).compile();
-
-  let blurbHTML = $('#blurb-template').text();
-  let blurbTemplate = Template7(blurbHTML).compile();
-
-  let projectListHTML = $('#project-list-template').text();
-  let projectListTemplate = Template7(projectListHTML).compile();  
-  
-  let modalHTML = $('#modal-template').text();
-  let modalTemplate = Template7(modalHTML).compile();
-
-  // get user info
-  let userURL = `https://api.behance.net/v2/users/${photographers[0]}?client_id=${behanceAPI}`;
-  console.log(userURL);
- 
-  $.ajax({
-    localCache: true,
-    url: userURL,
-    dataType: 'jsonp',
-    success: (res) => {
-
-      let data = res.user;
-
-      let hero = heroTemplate(data);
-      $('.hero').append(hero);
-
-      let blurb = blurbTemplate(data);
-      $('.blurb').append(blurb);
-      
-      let projectsURL = `https://api.behance.net/v2/users/${photographers[0]}/projects?client_id=${behanceAPI}`;
-      console.log(projectsURL);
-
-      $.ajax({
-        localCache: true,
-        url: projectsURL,
-        dataType: 'jsonp',
-        success: (res) => {
-          let projects = res.projects;
-
-          projects.forEach((project) => {
-            let listItem = projectListTemplate(project);
-            $('.projects').append(listItem);
-          });
-        }
-      });
-
-    }
-  });
-
-  // project modal popup
-  $('#portfolioModal').on('show.bs.modal',function(e){
-
-    let $projectContent = $('.project-content');
-    $projectContent.empty();
-
-    // grab project ID and build Behance API call url
-    let projectid = $(e.relatedTarget).data('projectid');
-    let urlProject = `https://api.behance.net/v2/projects/${projectid}?client_id=${behanceAPI}`;
-
-    console.log(urlProject);
-    $.ajax({
-      localCache: true,
-      url: urlProject,
-      dataType: 'jsonp',
-      success: function(res) {
-        let project = res.project;
-
-        let output = modalTemplate(project);
-
-        $projectContent.append(output);
-
-      }
-    });
-
-  });
-
-  $('#portfolioModal').on('shown.bs.modal',function(e){
-    //initialize swiper when document ready  
-    var mySwiper = new Swiper('.swiper-container', {
-      loop: true,
-      nextButton: '.swiper-button-next',
-      prevButton: '.swiper-button-prev'
-    })
-  });    
-
-  // collect API responses for all the photographers
-  let photographerStats = [];
-  let allViews = [];
-
-  // photographers.forEach(function(photographer) {
-  //   photographerStats.push(
-  //     $.ajax({
-  //       localCache: true,
-  //       url: `https://api.behance.net/v2/users/${photographer}?client_id=${behanceAPI}`,
-  //       dataType: 'jsonp'
-  //     })
-  //   );
-  // });
-
-  // $.when(photographerStats[0],photographerStats[1],photographerStats[2],photographerStats[3]).done(function(...args) {
-  //   args.forEach(function(res) {
-  //     let user = res[0].user;
-  //     allViews.push({name: user.display_name, value: user.stats.views});
-  //   });
-  
-  //   makePieChart(allViews, '#chart', 300, 300, 150);
-  // });
-
-  // dummy data for setup - comment this out for live presentation
-  allViews = [
-    {
-      name: 'Tina Picard',
-      value: 126361
-    },
-    {
-      name: 'Ilona D.Veresk',
-      value: 140679
-    },
-    {
-      name: 'André Josselin',
-      value: 1299503
-    },
-    {
-      name: 'Carl Warner',
-      value: 254803
-    },
-  ];
-
-  // makeBarChart(allViews, '#chart', 300, 300);
-  makePieChart(allViews, '#chart', 300, 300, 150);
-});
-
+// chart functions
 function makeBarChart(data, container, width, height) {
   // build a colour generator - d3 will map data to particular colours
   // let colourGen = d3.scaleOrdinal(d3.schemeSet2);
@@ -252,7 +118,157 @@ function makePieChart(data, container, width, height, radius){
       .style('alignment-baseline','middle')
       .style('font-family','Verdana')
       .style('font-size','12')
+      .style('fill','white')
       .attr('transform',function(d){ return `translate(${arcLabelGen.centroid(d)})` })
       .text(function(d){ return d.data.value.toLocaleString() });
   
+}
+
+$(function() {
+  // template functions
+  function setUserTemplate() {
+    let user = JSON.parse(sessionStorage.getItem('behanceUser'));
+    console.log(user);
+    let hero = heroTemplate(user);
+    $('.hero').append(hero);
+  
+    let blurb = blurbTemplate(user);
+    $('.blurb').append(blurb);
   }
+
+  function setProjectsTemplate() {
+    let projects = JSON.parse(sessionStorage.getItem('behanceUserProjects'));
+    console.log(projects);
+
+    projects.forEach((project) => {
+      let listItem = projectListTemplate(project);
+      $('.projects').append(listItem);
+    });
+  }
+
+  function setProjectDetailsTemplate(projectid, container) {
+    let $container = container;
+    $container.empty();
+
+    let project = JSON.parse(sessionStorage.getItem(`behanceProjectDetails-${projectid}`));
+    
+    let output = modalTemplate(project);
+
+    $container.append(output);
+  }
+  
+  function setViewsChart() {
+    let data = JSON.parse(sessionStorage.getItem('behanceAllViews'));
+
+    makePieChart(data, '#chart', 300, 300, 150);
+  }
+  
+  // Template7 templates
+  let heroHTML = $('#hero-template').text();
+  let heroTemplate = Template7(heroHTML).compile();
+
+  let blurbHTML = $('#blurb-template').text();
+  let blurbTemplate = Template7(blurbHTML).compile();
+
+  let projectListHTML = $('#project-list-template').text();
+  let projectListTemplate = Template7(projectListHTML).compile();  
+  
+  let modalHTML = $('#modal-template').text();
+  let modalTemplate = Template7(modalHTML).compile();
+
+  // get user info
+  let userURL = `https://api.behance.net/v2/users/${photographers[0]}?client_id=${behanceAPI}`;
+
+  // cache requests for session
+  if(sessionStorage.getItem('behanceUser')) {
+    setUserTemplate();
+  } else {
+    $.ajax({
+        url: userURL,
+        dataType: 'jsonp',
+        success: function(res) {
+          let data = JSON.stringify(res.user);
+          sessionStorage.setItem('behanceUser', data);
+          setUserTemplate();
+        }
+    });
+  }
+
+  let projectsURL = `https://api.behance.net/v2/users/${photographers[0]}/projects?client_id=${behanceAPI}`;
+  console.log(projectsURL);
+
+  if(sessionStorage.getItem('behanceUserProjects')) {
+    setProjectsTemplate();
+  } else {
+    $.ajax({
+        url: projectsURL,
+        dataType: 'jsonp',
+        success: function(res) {
+          let data = JSON.stringify(res.projects);
+          sessionStorage.setItem('behanceUserProjects', data);
+          setProjectsTemplate();
+        }
+    });
+  }
+
+  // project modal popup
+  $('#portfolioModal').on('show.bs.modal',function(e){
+
+    let $projectContent = $('.project-content');
+    $projectContent.empty();
+
+    // grab project ID and build Behance API url
+    let projectid = $(e.relatedTarget).data('projectid');
+    let projectDetailsURL = `https://api.behance.net/v2/projects/${projectid}?client_id=${behanceAPI}`;
+    console.log(projectDetailsURL);
+
+    if(sessionStorage.getItem(`behanceProjectDetails-${projectid}`)) {
+      setProjectDetailsTemplate(projectid, $projectContent);
+    } else {
+      $.ajax({
+          url: projectDetailsURL,
+          dataType: 'jsonp',
+          success: function(res) {
+            let data = JSON.stringify(res.project);
+            sessionStorage.setItem(`behanceProjectDetails-${projectid}`, data);
+            setProjectDetailsTemplate(projectid, $projectContent);
+          }
+      });
+    }
+  });
+
+  //initialize swiper when bootstrap modal is shown
+  $('#portfolioModal').on('shown.bs.modal',function(e){
+    let mySwiper = new Swiper('.swiper-container', {
+      loop: true,
+      nextButton: '.swiper-button-next',
+      prevButton: '.swiper-button-prev'
+    })
+  });    
+
+  // collect API responses for all the photographers
+  let photographerURLs = [];
+  if(sessionStorage.getItem('behanceAllViews')) {
+    setViewsChart();
+  } else {
+    photographers.forEach(function(photographer) {
+      photographerURLs.push(
+        $.ajax({
+          localCache: true,
+          url: `https://api.behance.net/v2/users/${photographer}?client_id=${behanceAPI}`,
+          dataType: 'jsonp'
+        })
+      );
+    });
+    $.when(photographerURLs[0],photographerURLs[1],photographerURLs[2],photographerURLs[3]).done(function(...args) {
+      let allViews = [];      
+      args.forEach(function(res) {
+        let user = res[0].user;
+        allViews.push({name: user.display_name, value: user.stats.views});
+      });
+      let data = JSON.stringify(allViews);
+      sessionStorage.setItem('behanceAllViews', data);
+      setViewsChart();
+    });
+  }
+});

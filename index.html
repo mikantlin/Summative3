@@ -42,7 +42,7 @@
   </section>
   
   <div class="container">
-    <div class="row projects px-3">
+    <div class="row projects">
       <h1 class="col-12 px-0">Portfolio</h1>
     </div>
   </div>
@@ -95,10 +95,10 @@
   </script>
 
   <script type="text/template" id="project-list-template">
-    <div class="card col-md-6 col-lg-4 px-0">
-        <img class="card-img" src="{{covers['404']}}" alt="{{name}}">
+    <div class="card col-md-6 col-lg-3 px-0 px-md-4">
+        <!-- <img class="card-img" src="{{covers['404']}}" alt="{{name}}"> -->
         <a class="card-link" data-toggle="modal" href="#portfolioModal" data-projectid="{{id}}">
-          <div class="card-img-overlay text-center d-flex align-items-center justify-content-center flex-column">
+          <div class="card-img-overlay text-center d-flex align-items-center justify-content-center flex-column" style="background-image: url({{covers['404']}})">
             <h4 class="card-title text-center mb-0">{{name}}</h4>
             <p class="card-text">{{fields[0]}}</p>
             <hr class="my-0">
