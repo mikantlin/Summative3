@@ -15,7 +15,7 @@
   <header class="jumbotron hero">
   </header>
 
-  <section class="about mb-2">
+  <section class="about mb-4">
     <div class="container">
       <div class="row">
         <div class="col-lg-6">
@@ -27,15 +27,17 @@
     </div>
   </section>
 
-  <section class="stats py-5 mb-4">
+  <section class="stats py-4 mb-4">
     <div class="container">
       <div class="row">
-        <div class="col-lg-8 chart-text">
-          <h1>Statistics</h1>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Error provident quod officia consequatur eaque laborum dolor officiis earum porro, autem ipsam laudantium maxime facere minima debitis est tempore. Enim, iusto.
+        <div class="col-12 mb-4"><h1>Statistics</h1></div>
+        <div class="col-10 mx-auto col-md-6 mb-4 col-lg-3 chart" id="viewsChart">
         </div>
-        <div class="col-lg-4" id="chart">
-          <!-- <svg id="compare" viewbox="0 0 300 300"></svg> -->
+        <div class="col-10 mx-auto col-md-6 mb-4 col-lg-3 chart" id="appreciationsChart">
+        </div>
+        <div class="col-10 mx-auto col-md-6 mb-4 col-lg-3 chart" id="commentsChart">
+        </div>
+        <div class="col-10 mx-auto col-md-6 mb-4 col-lg-3 chart" id="followersChart">
         </div>
       </div>
     </div>
@@ -43,7 +45,7 @@
   
   <div class="container">
     <div class="row projects">
-      <h1 class="col-12 px-0">Portfolio</h1>
+      <h1 class="col-12">Portfolio</h1>
     </div>
   </div>
 
@@ -92,6 +94,17 @@
       <p>{{this}}</p>
     {{/js_if}}
     {{/each}}
+    {{#if social_links}}
+    <h2 class="mt-4">Social Media</h2>
+    <div class="socialMedia">
+      {{#each social_links}}
+        {{#js_if "this.service_name !== 'Google+'"}}
+          <a href="{{this.url}}" class="socialMedia__link" title="{{this.service_name}}"><i class="fa fa-{{js 'this.service_name.toLowerCase()'}}"></i></a>
+        {{/js_if}}
+      {{/each}}
+      </ul>
+    </div>
+    {{/if}}
   </script>
 
   <script type="text/template" id="project-list-template">

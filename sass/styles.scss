@@ -75,6 +75,41 @@
 }
 
 // about
+.socialMedia {
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: space-between;
+  padding: 0;
+  margin: 0;
+
+  list-style-type: none;
+  
+  filter: none;
+  opacity: 1;
+  transition: ease-out .25s;
+
+  &:hover &__link {
+    filter: blur(2px);
+    opacity: .8;
+    transition: ease-in .3s;
+
+    &:hover {
+      filter: none;
+      opacity: 1;
+    }
+  }
+
+  &__link {
+    flex: 0 0 25%;
+    font-size: 2.5em;
+    text-align: center;
+
+    @include media-breakpoint-up(md) {
+      flex: 0 0 auto;
+    }
+  }
+}
 
 // statistics
 .stats {
@@ -95,7 +130,7 @@
 
     .card-img-overlay {
       padding: 0;
-      margin: $card-img-overlay-padding;
+      margin: ($card-img-overlay-padding/2) $card-img-overlay-padding;
       background-color: rgba(0,0,0,0);
       background-repeat: no-repeat;
       background-size: cover;

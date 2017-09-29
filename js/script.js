@@ -75,25 +75,28 @@ function makeBarChart(data, container, width, height) {
 
 }
 
-function makePieChart(data, container, width, height, radius){
+function makePieChart(data, stat, container, width, height, radius){
   
     let colGen = d3.scaleOrdinal()
-      .range(['#B4B9DF','#B95095','#71417F','#E2A1DB','#E3CBFD']);
+      .range(['#fec44f','#fe9929','#ec7014','#cc4c02','#993404','#662506']);
 
     // generators
     let pieDataGen = d3.pie()
             .sort(null)
-            .value(function(d){ return d.value });
+            .value(function(d){ return d[stat] });
+
     let arcGen = d3.arc()
             .outerRadius(radius)
             .innerRadius(radius/2)
-            .cornerRadius(2);
+            .cornerRadius(0);
+
     let arcLabelGen = d3.arc()
             .outerRadius(radius)
             .innerRadius(radius/2);
   
     let pieData = pieDataGen(data);
 
+    // creating the pie chart
     let pie = d3.select(container)
       .append("svg")
         .attr("viewBox", "0 0 " + width + " " + height)
@@ -118,9 +121,32 @@ function makePieChart(data, container, width, height, radius){
       .style('alignment-baseline','middle')
       .style('font-family','Verdana')
       .style('font-size','12')
-      .style('fill','white')
+      .style('fill','333')
       .attr('transform',function(d){ return `translate(${arcLabelGen.centroid(d)})` })
-      .text(function(d){ return d.data.value.toLocaleString() });
+      .text(function(d){ return d.value.toLocaleString() });
+
+    // title 
+    pie.append('text')
+    .text(function() {
+      if (stat == 'appreciations') {
+        return '\uf164';
+      } else if (stat == 'comments') {
+        return '\uf075';
+      } else if (stat == 'followers') {
+        return '\uf234';
+      } else if (stat == 'views') {
+        return '\uf06e';
+      }
+    })
+    .attr("transform", `translate(0,0)`)
+    .attr('text-anchor','middle')
+    .attr('alignment-baseline','middle')
+    .attr('font-size',30)
+    .attr('class','fa fa-5x fa-thumbs-up')
+    .style('fill','333');
+
+    // tooltip
+
   
 }
 
@@ -128,7 +154,7 @@ $(function() {
   // template functions
   function setUserTemplate() {
     let user = JSON.parse(sessionStorage.getItem('behanceUser'));
-    console.log(user);
+
     let hero = heroTemplate(user);
     $('.hero').append(hero);
   
@@ -138,7 +164,6 @@ $(function() {
 
   function setProjectsTemplate() {
     let projects = JSON.parse(sessionStorage.getItem('behanceUserProjects'));
-    console.log(projects);
 
     projects.forEach((project) => {
       let listItem = projectListTemplate(project);
@@ -157,10 +182,11 @@ $(function() {
     $container.append(output);
   }
   
-  function setViewsChart() {
-    let data = JSON.parse(sessionStorage.getItem('behanceAllViews'));
-
-    makePieChart(data, '#chart', 300, 300, 150);
+  function setChart(stat) {
+    let data = JSON.parse(sessionStorage.getItem('behanceStats'));
+    console.log(data);
+    
+    makePieChart(data, stat, `#${stat}Chart`, 300, 300, 150);
   }
   
   // Template7 templates
@@ -195,7 +221,6 @@ $(function() {
   }
 
   let projectsURL = `https://api.behance.net/v2/users/${photographers[0]}/projects?client_id=${behanceAPI}`;
-  console.log(projectsURL);
 
   if(sessionStorage.getItem('behanceUserProjects')) {
     setProjectsTemplate();
@@ -220,7 +245,6 @@ $(function() {
     // grab project ID and build Behance API url
     let projectid = $(e.relatedTarget).data('projectid');
     let projectDetailsURL = `https://api.behance.net/v2/projects/${projectid}?client_id=${behanceAPI}`;
-    console.log(projectDetailsURL);
 
     if(sessionStorage.getItem(`behanceProjectDetails-${projectid}`)) {
       setProjectDetailsTemplate(projectid, $projectContent);
@@ -248,9 +272,14 @@ $(function() {
 
   // collect API responses for all the photographers
   let photographerURLs = [];
-  if(sessionStorage.getItem('behanceAllViews')) {
-    setViewsChart();
+  if(sessionStorage.getItem('behanceStats')) {
+    // just run charts
+    setChart('views');
+    setChart('appreciations');
+    setChart('comments');
+    setChart('followers');
   } else {
+    // make the api call for each photographer
     photographers.forEach(function(photographer) {
       photographerURLs.push(
         $.ajax({
@@ -260,15 +289,22 @@ $(function() {
         })
       );
     });
+    // once they're all done, store it in sessionStorage
     $.when(photographerURLs[0],photographerURLs[1],photographerURLs[2],photographerURLs[3]).done(function(...args) {
-      let allViews = [];      
+      let userStats = [];      
       args.forEach(function(res) {
-        let user = res[0].user;
-        allViews.push({name: user.display_name, value: user.stats.views});
+        let user = res[0].user.stats;
+        user.name = res[0].user.display_name;
+        userStats.push(user);
       });
-      let data = JSON.stringify(allViews);
-      sessionStorage.setItem('behanceAllViews', data);
-      setViewsChart();
+      let data = JSON.stringify(userStats);
+      sessionStorage.setItem('behanceStats', data);
+
+      // after it's stored, run charts
+      setChart('views');
+      setChart('appreciations');
+      setChart('comments');
+      setChart('followers');
     });
   }
 });
