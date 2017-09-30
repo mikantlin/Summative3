@@ -79,7 +79,7 @@ function makeBarChart(data, container, width, height) {
 function makePieChart(data, stat, container, width, height, radius){
   
     let colGen = d3.scaleOrdinal()
-      .range(['#fec44f','#fe9929','#f15c25','#cc4c02','#993404','#662506']);
+      .range(['#fec44f','#fe9929','#FF6138','#cc4c02','#993404','#662506']);
 
     // generators
     let pieDataGen = d3.pie()
@@ -102,7 +102,7 @@ function makePieChart(data, stat, container, width, height, radius){
       .append("svg")
         .attr("viewBox", "0 0 " + width + " " + height)
         .append('g')
-          .attr('transform', `translate(${radius},${radius})`);
+          .attr('transform', `translate(${width/2},${height/2})`);
   
     pie.selectAll('.arc')
       .data(pieData)
@@ -111,7 +111,9 @@ function makePieChart(data, stat, container, width, height, radius){
       .attr('id',function(d,i){ return 'arc'+i})
       .attr('class','arc')
       .attr('d',arcGen)
-      .attr('fill',function(d){ return colGen(d.data.name) })
+      .style('stroke',function(d){ return colGen(d.data.name) })
+      .style('stroke-width',3)
+      .style('fill','transparent')
   
     // values
     pie.selectAll('.size')
@@ -122,7 +124,7 @@ function makePieChart(data, stat, container, width, height, radius){
       .style('alignment-baseline','middle')
       .style('font-family','Verdana')
       .style('font-size','12')
-      .style('fill','333')
+      .attr('class','chart__label')
       .attr('transform',function(d){ return `translate(${arcLabelGen.centroid(d)})` })
       .text(function(d){ return d.value.toLocaleString() });
 
@@ -142,9 +144,7 @@ function makePieChart(data, stat, container, width, height, radius){
     .attr("transform", `translate(0,0)`)
     .attr('text-anchor','middle')
     .attr('alignment-baseline','middle')
-    .attr('font-size',30)
-    .attr('class','fa fa-5x fa-thumbs-up')
-    .style('fill','333');
+    .attr('class','fa fa-5x chart__title');
 
     // tooltip
 
@@ -186,7 +186,7 @@ $(function() {
   function setChart(stat) {
     let data = JSON.parse(sessionStorage.getItem('behanceStats'));
     
-    makePieChart(data, stat, `#${stat}Chart`, 300, 300, 150);
+    makePieChart(data, stat, `#${stat}Chart`, 300, 300, 140);
   }
   
   // Template7 templates
