@@ -88,12 +88,17 @@ function makePieChart(data, stat, container, width, height, radius){
 
     let arcGen = d3.arc()
             .outerRadius(radius)
-            .innerRadius(radius/2)
+            .innerRadius(radius / 2)
             .cornerRadius(0);
 
+    let arcGenHover = d3.arc()
+            .outerRadius(radius * 1.1)
+            .innerRadius(radius / 1.9)
+            .cornerRadius(0);
+            
     let arcLabelGen = d3.arc()
             .outerRadius(radius)
-            .innerRadius(radius/2);
+            .innerRadius(radius / 2);
   
     let pieData = pieDataGen(data);
 
@@ -102,7 +107,7 @@ function makePieChart(data, stat, container, width, height, radius){
       .append("svg")
         .attr("viewBox", "0 0 " + width + " " + height)
         .append('g')
-          .attr('transform', `translate(${width/2},${height/2})`);
+          .attr('transform', `translate(${width / 2},${height / 2})`);
   
     pie.selectAll('.arc')
       .data(pieData)
@@ -111,9 +116,17 @@ function makePieChart(data, stat, container, width, height, radius){
       .attr('id',function(d,i){ return 'arc'+i})
       .attr('class','arc')
       .attr('d',arcGen)
-      .style('stroke',function(d){ return colGen(d.data.name) })
-      .style('stroke-width',3)
-      .style('fill','transparent')
+      .style('fill',function(d){ return colGen(d.data.name) })
+      .on("mouseover", function(d) {
+        d3.select(this).transition()
+          .duration(300)
+          .attr("d", arcGenHover);
+      })
+      .on("mouseout", function(d) {
+        d3.select(this).transition()
+          .duration(250)
+          .attr("d", arcGen);
+      });
   
     // values
     pie.selectAll('.size')
@@ -186,7 +199,7 @@ $(function() {
   function setChart(stat) {
     let data = JSON.parse(sessionStorage.getItem('behanceStats'));
     
-    makePieChart(data, stat, `#${stat}Chart`, 300, 300, 140);
+    makePieChart(data, stat, `#${stat}Chart`, 300, 300, 120);
   }
   
   // Template7 templates
