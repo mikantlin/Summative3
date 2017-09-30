@@ -18,7 +18,7 @@
   <section class="about mb-4">
     <div class="container">
       <div class="row">
-        <div class="col-lg-6 col-xl video">
+        <div class="mb-4 mb-lg-0 col-lg-6 col-xl video">
           <div id="featuredVideo"></div>
         </div>
         <div class="col-lg-6 col-xl-4 pl-xl-5 blurb">
@@ -27,29 +27,31 @@
     </div>
   </section>
 
-  <section class="stats py-4 mb-4">
+  <section class="stats py-4">
     <div class="container">
       <div class="row charts">
         <div class="col-12 mb-4"><h1>Team Statistics</h1></div>
-        <div class="col-10 mx-auto col-md-6 mb-4 col-lg-3 chart" id="viewsChart">
+        <div class="col-10 mx-auto col-md-6 col-lg-3 chart" id="viewsChart">
         </div>
-        <div class="col-10 mx-auto col-md-6 mb-4 col-lg-3 chart" id="appreciationsChart">
+        <div class="col-10 mx-auto col-md-6 col-lg-3 chart" id="appreciationsChart">
         </div>
-        <div class="col-10 mx-auto col-md-6 mb-4 col-lg-3 chart" id="commentsChart">
+        <div class="col-10 mx-auto col-md-6 col-lg-3 chart" id="commentsChart">
         </div>
-        <div class="col-10 mx-auto col-md-6 mb-4 col-lg-3 chart" id="followersChart">
+        <div class="col-10 mx-auto col-md-6 col-lg-3 chart" id="followersChart">
         </div>
       </div>
     </div>
   </section>
   
-  <div class="container">
-    <div class="row projects">
-      <h1 class="col-12">Portfolio</h1>
-    </div>
-  </div>
+  <section class="portfolio py-4">
+    <div class="container">
+      <div class="row projects">
+        <h1 class="col-12">Portfolio</h1>
+      </div>
+    </div>  
+  </section>
 
-  <footer class="footer mt-5">
+  <footer class="footer pt-5">
     <div class="container">
       <div class="row">
         <div class="col">
@@ -94,9 +96,8 @@
       <p>{{this}}</p>
     {{/js_if}}
     {{/each}}
-    <hr>
+    <hr class="mt-4">
     {{#if social_links}}
-    <!-- <h2 class="mt-4">Social Media</h2> -->
     <div class="socialMedia">
       {{#each social_links}}
         {{#js_if "this.service_name !== 'Google+'"}}
@@ -109,9 +110,9 @@
   </script>
 
   <script type="text/template" id="project-list-template">
-    <div class="card col-md-6 col-lg-3 px-0 px-md-4">
-        <a class="card-link" data-toggle="modal" href="#portfolioModal" data-projectid="{{id}}">
-          <div class="card-img-overlay text-center d-flex align-items-center justify-content-center flex-column" style="background-image: url({{covers['404']}})">
+    <div class="card col-md-6 col-lg-4 col-xl-3">
+        <a class="card-link mx-0 d-flex align-items-center justify-content-center" data-toggle="modal" href="#portfolioModal" data-projectid="{{id}}" style="background-image: url({{covers['404']}})">
+          <div class="card-label text-center d-flex align-items-center justify-content-center flex-column py-4">
             <h4 class="card-title text-center mb-0">{{name}}</h4>
             <p class="card-text">{{fields[0]}}</p>
             <hr class="my-0">

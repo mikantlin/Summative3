@@ -351,15 +351,11 @@ $(function() {
         var $container = $(".video");
         var newWidth = $container.width();
     
-        console.log(newWidth);
         // Resize video according to aspect ratio
         $player
           .width(newWidth)
           .height(newWidth * $player.data('aspectRatio'));
     }).resize();
-
-    // trigger resize to set dimensions once iframe is loaded
-    // $(window).trigger('resize');
   });
 
 
