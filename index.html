@@ -18,10 +18,10 @@
   <section class="about mb-4">
     <div class="container">
       <div class="row">
-        <div class="col-lg-6">
-          <img class="img-fluid mb-4" src="https://placehold.it/1000x600/eeeeee" alt="">
+        <div class="col-lg-6 col-xl-8 video">
+          <div id="featuredVideo"></div>
         </div>
-        <div class="col-lg-6 blurb">
+        <div class="col-lg-6 col-xl-4 blurb">
         </div>
       </div>
     </div>
@@ -94,12 +94,13 @@
       <p>{{this}}</p>
     {{/js_if}}
     {{/each}}
+    <hr>
     {{#if social_links}}
-    <h2 class="mt-4">Social Media</h2>
+    <!-- <h2 class="mt-4">Social Media</h2> -->
     <div class="socialMedia">
       {{#each social_links}}
         {{#js_if "this.service_name !== 'Google+'"}}
-          <a href="{{this.url}}" class="socialMedia__link" title="{{this.service_name}}"><i class="fa fa-{{js 'this.service_name.toLowerCase()'}}"></i></a>
+          <a href="{{this.url}}" target="_blank" class="socialMedia__link" title="{{this.service_name}}"><i class="fa fa-{{js 'this.service_name.toLowerCase()'}}"></i></a>
         {{/js_if}}
       {{/each}}
       </ul>
@@ -109,7 +110,6 @@
 
   <script type="text/template" id="project-list-template">
     <div class="card col-md-6 col-lg-3 px-0 px-md-4">
-        <!-- <img class="card-img" src="{{covers['404']}}" alt="{{name}}"> -->
         <a class="card-link" data-toggle="modal" href="#portfolioModal" data-projectid="{{id}}">
           <div class="card-img-overlay text-center d-flex align-items-center justify-content-center flex-column" style="background-image: url({{covers['404']}})">
             <h4 class="card-title text-center mb-0">{{name}}</h4>
@@ -123,11 +123,11 @@
 
   <script type="text/template" id="modal-template">
     <div class="modal-body">
-      <button class="btn btn-primary" data-dismiss="modal" type="button">
+      <button class="btn btn-primary pull-right" data-dismiss="modal" type="button">
           <i class="fa fa-times"></i>
       </button>
       <!-- Project Details Go Here -->
-      <h2>{{name}}</h2>
+      <h2 class="text-center">{{name}}</h2>
       <div class="swiper-container">
           <!-- Additional required wrapper -->
           <div class="swiper-wrapper">
@@ -150,6 +150,7 @@
   
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://player.vimeo.com/api/player.js"></script>
   <script src="vendor/jalc/jalc.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>

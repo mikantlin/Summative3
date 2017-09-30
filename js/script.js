@@ -1,5 +1,6 @@
 // config variables
 const behanceAPI = 'TJWj9OP9YyUJxO7X1cD2Dovr6e5NeOWJ';
+const portfolioVideoID = '110471927';
 const photographers = ['tinapicardphoto','ilonaveresk','andrejosselin','Carlaveggio'];
 
 // chart functions
@@ -78,7 +79,7 @@ function makeBarChart(data, container, width, height) {
 function makePieChart(data, stat, container, width, height, radius){
   
     let colGen = d3.scaleOrdinal()
-      .range(['#fec44f','#fe9929','#ec7014','#cc4c02','#993404','#662506']);
+      .range(['#fec44f','#fe9929','#f15c25','#cc4c02','#993404','#662506']);
 
     // generators
     let pieDataGen = d3.pie()
@@ -158,8 +159,8 @@ $(function() {
     let hero = heroTemplate(user);
     $('.hero').append(hero);
   
-    let blurb = blurbTemplate(user);
-    $('.blurb').append(blurb);
+    let aboutBlurb = blurbTemplate(user);
+    $('.blurb').append(aboutBlurb);
   }
 
   function setProjectsTemplate() {
@@ -184,7 +185,6 @@ $(function() {
   
   function setChart(stat) {
     let data = JSON.parse(sessionStorage.getItem('behanceStats'));
-    console.log(data);
     
     makePieChart(data, stat, `#${stat}Chart`, 300, 300, 150);
   }
@@ -307,4 +307,47 @@ $(function() {
       setChart('followers');
     });
   }
+
+  // set up portfolio video (referenced https://github.com/vimeo/player.js)
+  var options = {
+      id: portfolioVideoID,
+      width: 640,
+      loop: true,
+      color: 'f15c25'
+  };
+
+  var player = new Vimeo.Player('featuredVideo', options);
+
+  player.on('play', function() {
+      console.log('played the video!');
+  });
+
+  player.ready().then(function() {
+    let $player = $('.video iframe');
+
+    $player
+    // attach video's aspect ratio
+    .data('aspectRatio', $player.height() / $player.width())
+
+    // and remove the hardcoded width/height
+    .removeAttr('height')
+    .removeAttr('width');
+
+    $(window).resize(function() {
+      
+        var $container = $(".video");
+        var newWidth = $container.width();
+    
+        console.log(newWidth);
+        // Resize video according to aspect ratio
+        $player
+          .width(newWidth)
+          .height(newWidth * $player.data('aspectRatio'));
+    }).resize();
+
+    // trigger resize to set dimensions once iframe is loaded
+    // $(window).trigger('resize');
+  });
+
+
 });

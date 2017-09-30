@@ -11,6 +11,10 @@
     height: 25em;
   }
 
+  hr {
+    border-color: #fff;
+  }
+
   &__header {
     font-size: 2.5em;
     text-align: center;
@@ -104,6 +108,8 @@
     flex: 0 0 25%;
     font-size: 2.5em;
     text-align: center;
+
+    color: #666;
 
     @include media-breakpoint-up(md) {
       flex: 0 0 auto;
