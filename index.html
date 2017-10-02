@@ -29,13 +29,17 @@
 
   <section class="stats py-4">
     <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-6 mb-4"><h1>Team Statistics</h1></div>
+        <div class="col-12 mx-auto col-lg-6 align-middle" id="chartLegend">
+            <ul class="legend">
+            </ul>
+        </div>
+      </div>
       <div class="row charts">
-        <div class="col-12 mb-4"><h1>Team Statistics</h1></div>
         <div class="col-10 mx-auto col-md-6 col-lg-3 chart" id="viewsChart">
         </div>
         <div class="col-10 mx-auto col-md-6 col-lg-3 chart" id="appreciationsChart">
-        </div>
-        <div class="col-10 mx-auto col-md-6 col-lg-3 chart" id="commentsChart">
         </div>
         <div class="col-10 mx-auto col-md-6 col-lg-3 chart" id="followersChart">
         </div>
@@ -51,17 +55,18 @@
     </div>  
   </section>
 
-  <footer class="footer pt-5">
+  <footer class="footer">
     <div class="container">
       <div class="row">
         <div class="col">
+          <small>Mike Lines &copy; 2017</small>
         </div>
       </div>
     </div>
   </footer>
   
   <div class="portfolio-modal modal fade" id="portfolioModal" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog h-100 d-flex flex-column justify-content-center my-0">
         <div class="modal-content">
           <div class="close-modal" data-dismiss="modal">
             <div class="lr">
@@ -111,12 +116,11 @@
 
   <script type="text/template" id="project-list-template">
     <div class="card col-md-6 col-lg-4 col-xl-3">
-        <a class="card-link mx-0 d-flex align-items-center justify-content-center" data-toggle="modal" href="#portfolioModal" data-projectid="{{id}}" style="background-image: url({{covers['404']}})">
-          <div class="card-label text-center d-flex align-items-center justify-content-center flex-column py-4">
-            <h4 class="card-title text-center mb-0">{{name}}</h4>
-            <p class="card-text">{{fields[0]}}</p>
-            <hr class="my-0">
-            <p class="card-text text-center my-0">{{js 'moment.unix(this.published_on).fromNow()'}}</p>
+        <a class="card-link mx-0" data-toggle="modal" href="#portfolioModal" data-projectid="{{id}}" style="background-image: url({{covers['404']}})">
+          <div class="card-label p-4">
+            <h4 class="card-title mb-0">{{name}}</h4>
+            <p class="card-text mb-0">{{fields[0]}}</p>
+            <p class="card-text project-date mt-2 pt-2">{{js 'moment.unix(this.published_on).fromNow()'}}</p>
           </div>
         </a>
     </div>

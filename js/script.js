@@ -2,11 +2,12 @@
 const behanceAPI = 'TJWj9OP9YyUJxO7X1cD2Dovr6e5NeOWJ';
 const portfolioVideoID = '110471927';
 const photographers = ['tinapicardphoto','ilonaveresk','andrejosselin','Carlaveggio'];
+const chartColours = ['#fec44f','#fe9929','#FF6138','#cc4c02'];
 
 // chart functions
 function makeBarChart(data, container, width, height) {
   // build a colour generator - d3 will map data to particular colours
-  // let colourGen = d3.scaleOrdinal(d3.schemeSet2);
+  let colourGen = d3.scaleOrdinal(chartColours);
 
   let minMax = d3.extent(data,function(d){ return d.value});
 
@@ -27,8 +28,7 @@ function makeBarChart(data, container, width, height) {
       .append('rect')
   
         // set colour
-        // .style('fill', function(d,i){ return colourGen(i) })
-        .style('fill', 'darkorange')
+        .style('fill', function(d,i){ return colourGen(i) })
         
         // set initial states for x, y coordinates, width and height
         .attr('class','bar')
@@ -79,7 +79,7 @@ function makeBarChart(data, container, width, height) {
 function makePieChart(data, stat, container, width, height, radius){
   
     let colGen = d3.scaleOrdinal()
-      .range(['#fec44f','#fe9929','#FF6138','#cc4c02','#993404','#662506']);
+      .range(chartColours);
 
     // generators
     let pieDataGen = d3.pie()
@@ -158,10 +158,6 @@ function makePieChart(data, stat, container, width, height, radius){
     .attr('text-anchor','middle')
     .attr('alignment-baseline','middle')
     .attr('class','fa fa-5x chart__title');
-
-    // tooltip
-
-  
 }
 
 $(function() {
@@ -197,9 +193,18 @@ $(function() {
   }
   
   function setChart(stat) {
-    let data = JSON.parse(sessionStorage.getItem('behanceStats'));
-    
-    makePieChart(data, stat, `#${stat}Chart`, 300, 300, 120);
+    let chartData = JSON.parse(sessionStorage.getItem('behanceStats'));
+
+    makePieChart(chartData, stat, `#${stat}Chart`, 250, 250, 100);
+  }
+
+  function setLegend() {
+    let legendData = JSON.parse(sessionStorage.getItem('behanceStats'));
+
+    let $legend = $('.legend');
+    legendData.forEach(function(d, i) {
+      $legend.append(`<li style="background-color: ${chartColours[i]};></div> <span class="legend__text">${d.name}</span></li>`);
+    });
   }
   
   // Template7 templates
@@ -230,6 +235,81 @@ $(function() {
           sessionStorage.setItem('behanceUser', data);
           setUserTemplate();
         }
+    });
+  }
+
+  // set up portfolio video (referenced https://github.com/vimeo/player.js)
+  let options = {
+    id: portfolioVideoID,
+    width: 640,
+    loop: true,
+    color: 'f15c25'
+  };
+
+  let player = new Vimeo.Player('featuredVideo', options);
+
+  player.on('play', function() {
+      console.log('played the video!');
+  });
+
+  player.ready().then(function() {
+    let $player = $('.video iframe');
+
+    $player
+    // attach video's aspect ratio
+    .data('aspectRatio', $player.height() / $player.width())
+
+    // and remove the hardcoded width/height
+    .removeAttr('height')
+    .removeAttr('width');
+
+    $(window).resize(function() {
+      
+        let $container = $(".video");
+        let newWidth = $container.width();
+    
+        // Resize video according to aspect ratio
+        $player
+          .width(newWidth)
+          .height(newWidth * $player.data('aspectRatio'));
+    }).resize();
+  });
+
+  // collect API responses for all the photographers
+  let photographerURLs = [];
+  if(sessionStorage.getItem('behanceStats')) {
+    // just run charts
+    setLegend();
+    setChart('views');
+    setChart('appreciations');
+    setChart('followers');
+  } else {
+    // make the api call for each photographer
+    photographers.forEach(function(photographer) {
+      photographerURLs.push(
+        $.ajax({
+          localCache: true,
+          url: `https://api.behance.net/v2/users/${photographer}?client_id=${behanceAPI}`,
+          dataType: 'jsonp'
+        })
+      );
+    });
+    // once they're all done, store it in sessionStorage
+    $.when(photographerURLs[0],photographerURLs[1],photographerURLs[2],photographerURLs[3]).done(function(...args) {
+      let userStats = [];      
+      args.forEach(function(res) {
+        let user = res[0].user.stats;
+        user.name = res[0].user.display_name;
+        userStats.push(user);
+      });
+      let data = JSON.stringify(userStats);
+      sessionStorage.setItem('behanceStats', data);
+
+      // after it's stored, run charts
+      setLegend();
+      setChart('views');
+      setChart('appreciations');
+      setChart('followers');
     });
   }
 
@@ -279,84 +359,9 @@ $(function() {
     let mySwiper = new Swiper('.swiper-container', {
       loop: true,
       nextButton: '.swiper-button-next',
-      prevButton: '.swiper-button-prev'
+      prevButton: '.swiper-button-prev',
+      autoHeight: true
     })
   });    
-
-  // collect API responses for all the photographers
-  let photographerURLs = [];
-  if(sessionStorage.getItem('behanceStats')) {
-    // just run charts
-    setChart('views');
-    setChart('appreciations');
-    setChart('comments');
-    setChart('followers');
-  } else {
-    // make the api call for each photographer
-    photographers.forEach(function(photographer) {
-      photographerURLs.push(
-        $.ajax({
-          localCache: true,
-          url: `https://api.behance.net/v2/users/${photographer}?client_id=${behanceAPI}`,
-          dataType: 'jsonp'
-        })
-      );
-    });
-    // once they're all done, store it in sessionStorage
-    $.when(photographerURLs[0],photographerURLs[1],photographerURLs[2],photographerURLs[3]).done(function(...args) {
-      let userStats = [];      
-      args.forEach(function(res) {
-        let user = res[0].user.stats;
-        user.name = res[0].user.display_name;
-        userStats.push(user);
-      });
-      let data = JSON.stringify(userStats);
-      sessionStorage.setItem('behanceStats', data);
-
-      // after it's stored, run charts
-      setChart('views');
-      setChart('appreciations');
-      setChart('comments');
-      setChart('followers');
-    });
-  }
-
-  // set up portfolio video (referenced https://github.com/vimeo/player.js)
-  var options = {
-      id: portfolioVideoID,
-      width: 640,
-      loop: true,
-      color: 'f15c25'
-  };
-
-  var player = new Vimeo.Player('featuredVideo', options);
-
-  player.on('play', function() {
-      console.log('played the video!');
-  });
-
-  player.ready().then(function() {
-    let $player = $('.video iframe');
-
-    $player
-    // attach video's aspect ratio
-    .data('aspectRatio', $player.height() / $player.width())
-
-    // and remove the hardcoded width/height
-    .removeAttr('height')
-    .removeAttr('width');
-
-    $(window).resize(function() {
-      
-        var $container = $(".video");
-        var newWidth = $container.width();
-    
-        // Resize video according to aspect ratio
-        $player
-          .width(newWidth)
-          .height(newWidth * $player.data('aspectRatio'));
-    }).resize();
-  });
-
 
 });
