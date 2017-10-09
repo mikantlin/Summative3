@@ -248,10 +248,6 @@ $(function() {
 
   let player = new Vimeo.Player('featuredVideo', options);
 
-  player.on('play', function() {
-      console.log('played the video!');
-  });
-
   player.ready().then(function() {
     let $player = $('.video iframe');
 
@@ -362,6 +358,24 @@ $(function() {
       prevButton: '.swiper-button-prev',
       autoHeight: true
     })
-  });    
+  });
+
+  let $spans = $('.card-link span');
+  $spans.each(function(){
+    $(this).parent().css({
+    'height': ($(this).height() + 2) + 'px',
+    'position':'relative',
+    'overflow':'hidden'
+    });
+  });
+  $spans.css({
+    'position':'absolute',
+    'top': '0',
+    'left': '0',
+    'right': '0'
+  });
+  $('.card-link').hover(function() {
+    $(this).find('span').toggleClass('show');
+  });
 
 });

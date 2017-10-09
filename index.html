@@ -66,20 +66,12 @@
   </footer>
   
   <div class="portfolio-modal modal fade" id="portfolioModal" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog h-100 d-flex flex-column justify-content-center my-0">
-        <div class="modal-content">
-          <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-              <div class="rl"></div>
-            </div>
-          </div>
-          <div class="project-content">
-            <!-- Project details loaded here via template7 -->
-          </div>
-        </div>
+    <div class="modal-dialog h-100 d-flex flex-column justify-content-center my-0">
+      <div class="modal-content project-content">
+          <!-- Project details loaded here via template7 -->
       </div>
     </div>
-    </script>
+  </div>
   
   <!-- Template7 Templates -->
   <script type="text/template" id="hero-template">
@@ -118,9 +110,10 @@
     <div class="card col-md-6 col-lg-4 col-xl-3">
         <a class="card-link mx-0" data-toggle="modal" href="#portfolioModal" data-projectid="{{id}}" style="background-image: url({{covers['404']}})">
           <div class="card-label p-4">
-            <h4 class="card-title mb-0">{{name}}</h4>
-            <p class="card-text mb-0">{{fields[0]}}</p>
-            <p class="card-text project-date mt-2 pt-2">{{js 'moment.unix(this.published_on).fromNow()'}}</p>
+            <h4 class="card-title mb-0"><span>{{name}}</span></h4>
+            <p class="card-text mb-0"><span>{{fields[0]}}</span></p>
+            <hr>
+            <p class="card-text project-date"><span>{{js 'moment.unix(this.published_on).fromNow()'}}</span></p>
           </div>
         </a>
     </div>

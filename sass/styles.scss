@@ -206,19 +206,20 @@
       transition: ease-out .25s;
 
       &:hover .card-label {
-        opacity: .8;
+        opacity: .9;
       }  
 
       @include media-breakpoint-up(sm) {
-        height: 20em;
+        height: 25em;
       }  
     }
 
     &-label {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
+      position: relative;
+      // display: flex;
+      // align-items: center;
+      // justify-content: center;
+      // flex-direction: column;
       
       flex: 0 0 100%;
 
@@ -228,10 +229,21 @@
 
       opacity: 0;
       transition: ease-out .25s;
+      
+      hr {
+        border-color: #fff;
+      }
+
+      span {
+        width: 100%;
+
+        &.show {
+          animation: .8s slide-up;
+        }
+      }
     }
 
     .project-date {
-      border-top: 1px solid #fff;
       font-style: italic;
       font-size: .8em;
     }
@@ -248,6 +260,11 @@
   }
 }
 
+.swiper-button-next,
+.swiper-button-prev {
+  filter: hue-rotate(150deg);  
+}
+
 footer {
   display: flex;
   align-items : center;
@@ -255,4 +272,14 @@ footer {
   color: #fff;
   background-color: #333;
   text-align: center;
+}
+
+@keyframes slide-up {
+  from {
+    top: 100%;
+  }
+
+  to {
+    top: 0%;
+  }
 }
