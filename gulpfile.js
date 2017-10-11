@@ -11,7 +11,7 @@ gulp.task('sass', function () {
   return gulp.src('./sass/styles.scss')
     .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
-    .pipe(postcss([autoprefixer()]))
+    // .pipe(postcss([autoprefixer()]))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./css'))
     .pipe(browserSync.reload({

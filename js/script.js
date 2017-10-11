@@ -161,221 +161,236 @@ function makePieChart(data, stat, container, width, height, radius){
 }
 
 $(function() {
-  // template functions
-  function setUserTemplate() {
-    let user = JSON.parse(sessionStorage.getItem('behanceUser'));
-
-    let hero = heroTemplate(user);
-    $('.hero').append(hero);
-  
-    let aboutBlurb = blurbTemplate(user);
-    $('.blurb').append(aboutBlurb);
-  }
-
-  function setProjectsTemplate() {
-    let projects = JSON.parse(sessionStorage.getItem('behanceUserProjects'));
-
-    projects.forEach((project) => {
-      let listItem = projectListTemplate(project);
-      $('.projects').append(listItem);
-    });
-  }
-
-  function setProjectDetailsTemplate(projectid, container) {
-    let $container = container;
-    $container.empty();
-
-    let project = JSON.parse(sessionStorage.getItem(`behanceProjectDetails-${projectid}`));
-    
-    let output = modalTemplate(project);
-
-    $container.append(output);
-  }
-  
-  function setChart(stat) {
-    let chartData = JSON.parse(sessionStorage.getItem('behanceStats'));
-
-    makePieChart(chartData, stat, `#${stat}Chart`, 250, 250, 100);
-  }
-
-  function setLegend() {
-    let legendData = JSON.parse(sessionStorage.getItem('behanceStats'));
-
-    let $legend = $('.legend');
-    legendData.forEach(function(d, i) {
-      $legend.append(`<li style="background-color: ${chartColours[i]};></div> <span class="legend__text">${d.name}</span></li>`);
-    });
-  }
-  
-  // Template7 templates
-  let heroHTML = $('#hero-template').text();
-  let heroTemplate = Template7(heroHTML).compile();
-
-  let blurbHTML = $('#blurb-template').text();
-  let blurbTemplate = Template7(blurbHTML).compile();
-
-  let projectListHTML = $('#project-list-template').text();
-  let projectListTemplate = Template7(projectListHTML).compile();  
-  
-  let modalHTML = $('#modal-template').text();
-  let modalTemplate = Template7(modalHTML).compile();
-
-  // get user info
-  let userURL = `https://api.behance.net/v2/users/${photographers[0]}?client_id=${behanceAPI}`;
-
-  // cache requests for session
-  if(sessionStorage.getItem('behanceUser')) {
-    setUserTemplate();
-  } else {
-    $.ajax({
-        url: userURL,
-        dataType: 'jsonp',
-        success: function(res) {
-          let data = JSON.stringify(res.user);
-          sessionStorage.setItem('behanceUser', data);
-          setUserTemplate();
-        }
-    });
-  }
-
-  // set up portfolio video (referenced https://github.com/vimeo/player.js)
-  let options = {
-    id: portfolioVideoID,
-    width: 640,
-    loop: true,
-    color: 'f15c25'
-  };
-
-  let player = new Vimeo.Player('featuredVideo', options);
-
-  player.ready().then(function() {
-    let $player = $('.video iframe');
-
-    $player
-    // attach video's aspect ratio
-    .data('aspectRatio', $player.height() / $player.width())
-
-    // and remove the hardcoded width/height
-    .removeAttr('height')
-    .removeAttr('width');
-
-    $(window).resize(function() {
-      
-        let $container = $(".video");
-        let newWidth = $container.width();
-    
-        // Resize video according to aspect ratio
-        $player
-          .width(newWidth)
-          .height(newWidth * $player.data('aspectRatio'));
-    }).resize();
+  $.fn.extend({
+    exists: function() {
+      return this.length > 0;
+    }
   });
 
-  // collect API responses for all the photographers
-  let photographerURLs = [];
-  if(sessionStorage.getItem('behanceStats')) {
-    // just run charts
-    setLegend();
-    setChart('views');
-    setChart('appreciations');
-    setChart('followers');
-  } else {
-    // make the api call for each photographer
-    photographers.forEach(function(photographer) {
-      photographerURLs.push(
-        $.ajax({
-          localCache: true,
-          url: `https://api.behance.net/v2/users/${photographer}?client_id=${behanceAPI}`,
-          dataType: 'jsonp'
-        })
-      );
-    });
-    // once they're all done, store it in sessionStorage
-    $.when(photographerURLs[0],photographerURLs[1],photographerURLs[2],photographerURLs[3]).done(function(...args) {
-      let userStats = [];      
-      args.forEach(function(res) {
-        let user = res[0].user.stats;
-        user.name = res[0].user.display_name;
-        userStats.push(user);
-      });
-      let data = JSON.stringify(userStats);
-      sessionStorage.setItem('behanceStats', data);
+  // main page code
+  if ($('main-page').exists()) {
+    
+  }
 
-      // after it's stored, run charts
+  // profile page code
+  if ($('#profile').exists()) {
+
+    // template functions
+    function setUserTemplate() {
+      let user = JSON.parse(sessionStorage.getItem('behanceUser'));
+
+      let hero = heroTemplate(user);
+      $('.hero').append(hero);
+    
+      let aboutBlurb = blurbTemplate(user);
+      $('.blurb').append(aboutBlurb);
+    }
+
+    function setProjectsTemplate() {
+      let projects = JSON.parse(sessionStorage.getItem('behanceUserProjects'));
+
+      projects.forEach((project) => {
+        let listItem = projectListTemplate(project);
+        $('.projects').append(listItem);
+      });
+    }
+
+    function setProjectDetailsTemplate(projectid, container) {
+      let $container = container;
+      $container.empty();
+
+      let project = JSON.parse(sessionStorage.getItem(`behanceProjectDetails-${projectid}`));
+      
+      let output = modalTemplate(project);
+
+      $container.append(output);
+    }
+    
+    function setChart(stat) {
+      let chartData = JSON.parse(sessionStorage.getItem('behanceStats'));
+
+      makePieChart(chartData, stat, `#${stat}Chart`, 250, 250, 100);
+    }
+
+    function setLegend() {
+      let legendData = JSON.parse(sessionStorage.getItem('behanceStats'));
+
+      let $legend = $('.legend');
+      legendData.forEach(function(d, i) {
+        $legend.append(`<li style="background-color: ${chartColours[i]};></div> <span class="legend__text">${d.name}</span></li>`);
+      });
+    }
+    
+    // Template7 templates
+    let heroHTML = $('#hero-template').text();
+    let heroTemplate = Template7(heroHTML).compile();
+
+    let blurbHTML = $('#blurb-template').text();
+    let blurbTemplate = Template7(blurbHTML).compile();
+
+    let projectListHTML = $('#project-list-template').text();
+    let projectListTemplate = Template7(projectListHTML).compile();  
+    
+    let modalHTML = $('#modal-template').text();
+    let modalTemplate = Template7(modalHTML).compile();
+
+    // get user info
+    let userURL = `https://api.behance.net/v2/users/${photographers[0]}?client_id=${behanceAPI}`;
+
+    // cache requests for session
+    if(sessionStorage.getItem('behanceUser')) {
+      setUserTemplate();
+    } else {
+      $.ajax({
+          url: userURL,
+          dataType: 'jsonp',
+          success: function(res) {
+            let data = JSON.stringify(res.user);
+            sessionStorage.setItem('behanceUser', data);
+            setUserTemplate();
+          }
+      });
+    }
+
+    // set up portfolio video (referenced https://github.com/vimeo/player.js)
+    let options = {
+      id: portfolioVideoID,
+      width: 640,
+      loop: true,
+      color: 'f15c25'
+    };
+
+    let player = new Vimeo.Player('featuredVideo', options);
+
+    player.ready().then(function() {
+      let $player = $('.video iframe');
+
+      $player
+      // attach video's aspect ratio
+      .data('aspectRatio', $player.height() / $player.width())
+
+      // and remove the hardcoded width/height
+      .removeAttr('height')
+      .removeAttr('width');
+
+      $(window).resize(function() {
+        
+          let $container = $(".video");
+          let newWidth = $container.width();
+      
+          // Resize video according to aspect ratio
+          $player
+            .width(newWidth)
+            .height(newWidth * $player.data('aspectRatio'));
+      }).resize();
+    });
+
+    // collect API responses for all the photographers
+    let photographerURLs = [];
+    if(sessionStorage.getItem('behanceStats')) {
+      // just run charts
       setLegend();
       setChart('views');
       setChart('appreciations');
       setChart('followers');
-    });
-  }
+    } else {
+      // make the api call for each photographer
+      photographers.forEach(function(photographer) {
+        photographerURLs.push(
+          $.ajax({
+            localCache: true,
+            url: `https://api.behance.net/v2/users/${photographer}?client_id=${behanceAPI}`,
+            dataType: 'jsonp'
+          })
+        );
+      });
+      // once they're all done, store it in sessionStorage
+      $.when(photographerURLs[0],photographerURLs[1],photographerURLs[2],photographerURLs[3]).done(function(...args) {
+        let userStats = [];      
+        args.forEach(function(res) {
+          let user = res[0].user.stats;
+          user.name = res[0].user.display_name;
+          userStats.push(user);
+        });
+        let data = JSON.stringify(userStats);
+        sessionStorage.setItem('behanceStats', data);
 
-  let projectsURL = `https://api.behance.net/v2/users/${photographers[0]}/projects?client_id=${behanceAPI}`;
+        // after it's stored, run charts
+        setLegend();
+        setChart('views');
+        setChart('appreciations');
+        setChart('followers');
+      });
+    }
 
-  if(sessionStorage.getItem('behanceUserProjects')) {
-    setProjectsTemplate();
-  } else {
-    $.ajax({
-        url: projectsURL,
-        dataType: 'jsonp',
-        success: function(res) {
-          let data = JSON.stringify(res.projects);
-          sessionStorage.setItem('behanceUserProjects', data);
-          setProjectsTemplate();
-        }
-    });
-  }
+    let projectsURL = `https://api.behance.net/v2/users/${photographers[0]}/projects?client_id=${behanceAPI}`;
 
-  // project modal popup
-  $('#portfolioModal').on('show.bs.modal',function(e){
-
-    let $projectContent = $('.project-content');
-    $projectContent.empty();
-
-    // grab project ID and build Behance API url
-    let projectid = $(e.relatedTarget).data('projectid');
-    let projectDetailsURL = `https://api.behance.net/v2/projects/${projectid}?client_id=${behanceAPI}`;
-
-    if(sessionStorage.getItem(`behanceProjectDetails-${projectid}`)) {
-      setProjectDetailsTemplate(projectid, $projectContent);
+    if(sessionStorage.getItem('behanceUserProjects')) {
+      setProjectsTemplate();
     } else {
       $.ajax({
-          url: projectDetailsURL,
+          url: projectsURL,
           dataType: 'jsonp',
           success: function(res) {
-            let data = JSON.stringify(res.project);
-            sessionStorage.setItem(`behanceProjectDetails-${projectid}`, data);
-            setProjectDetailsTemplate(projectid, $projectContent);
+            let data = JSON.stringify(res.projects);
+            sessionStorage.setItem('behanceUserProjects', data);
+            setProjectsTemplate();
           }
       });
     }
-  });
 
-  //initialize swiper when bootstrap modal is shown
-  $('#portfolioModal').on('shown.bs.modal',function(e){
-    let mySwiper = new Swiper('.swiper-container', {
-      loop: true,
-      nextButton: '.swiper-button-next',
-      prevButton: '.swiper-button-prev',
-      autoHeight: true
-    })
-  });
+    // project modal popup
+    $('#portfolioModal').on('show.bs.modal',function(e){
 
-  let $spans = $('.card-link span');
-  $spans.each(function(){
-    $(this).parent().css({
-    'height': ($(this).height() + 2) + 'px',
-    'position':'relative',
-    'overflow':'hidden'
+      let $projectContent = $('.project-content');
+      $projectContent.empty();
+
+      // grab project ID and build Behance API url
+      let projectid = $(e.relatedTarget).data('projectid');
+      let projectDetailsURL = `https://api.behance.net/v2/projects/${projectid}?client_id=${behanceAPI}`;
+
+      if(sessionStorage.getItem(`behanceProjectDetails-${projectid}`)) {
+        setProjectDetailsTemplate(projectid, $projectContent);
+      } else {
+        $.ajax({
+            url: projectDetailsURL,
+            dataType: 'jsonp',
+            success: function(res) {
+              let data = JSON.stringify(res.project);
+              sessionStorage.setItem(`behanceProjectDetails-${projectid}`, data);
+              setProjectDetailsTemplate(projectid, $projectContent);
+            }
+        });
+      }
     });
-  });
-  $spans.css({
-    'position':'absolute',
-    'top': '0',
-    'left': '0',
-    'right': '0'
-  });
-  $('.card-link').hover(function() {
-    $(this).find('span').toggleClass('show');
-  });
+
+    //initialize swiper when bootstrap modal is shown
+    $('#portfolioModal').on('shown.bs.modal',function(e){
+      let mySwiper = new Swiper('.swiper-container', {
+        loop: true,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        autoHeight: true
+      })
+    });
+
+    let $spans = $('.card-link span');
+    $spans.each(function(){
+      $(this).parent().css({
+      'height': ($(this).height() + 2) + 'px',
+      'position':'relative',
+      'overflow':'hidden'
+      });
+    });
+    $spans.css({
+      'position':'absolute',
+      'top': '0',
+      'left': '0',
+      'right': '0'
+    });
+    $('.card-link').hover(function() {
+      $(this).find('span').toggleClass('show');
+    });
+  }
 
 });

@@ -2,6 +2,111 @@
 @import 'bootstrap/bootstrap';
 
 // your styles here (note that you can use Bootstrap variables from _variables.scss in here too)
+@mixin linearGradient($col1, $col2){
+  background: $col1; /* Old browsers */
+  background: linear-gradient(to bottom right,  $col1 0%,$col2 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+}
+
+@mixin profileHover($col1, $col2) {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  @include linearGradient($col1, $col2);
+  opacity: 0;
+  // transition: ease-in .3s;  
+
+  &:hover {
+    opacity: .3;
+  }
+}
+
+// main page
+.profiles__header {
+  font-size: 2em;
+
+  @include media-breakpoint-up(sm) {
+    font-size: 3em;
+  }
+}
+
+.profile {
+  padding: 0;  
+  height: 20em;
+  
+  background-size: cover;
+  background-position: center;
+
+  &__link {
+    position: relative;
+
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      .profile__info {
+        opacity: 1;
+      }
+    }
+
+  }
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  &__info {
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    opacity: 0;
+  }
+
+  &--am {
+    background-image: url('/img/sam-burriss-349469.jpg');
+
+    .profile__overlay {
+      @include profileHover(#6E0DBD, #0DBD3F);     
+    }
+  }
+
+  &--archen {
+    background-image: url('/img/andrew-robles-300868.jpg');
+
+    .profile__overlay {
+      @include profileHover(#DB1E0D, #C4F000);     
+    }
+  }
+
+  &--mike {
+    background-image: url('/img/janko-ferlic-165856.jpg');
+
+    .profile__overlay {
+      @include profileHover(#FF6138, rebeccapurple);     
+    }
+  }
+
+  &--zame {
+    background-image: url('/img/ivana-cajina-322968.jpg');
+
+    .profile__overlay {
+      @include profileHover(#02AAF7, yellow);     
+    }
+  }
+
+}
+
+// hero
 .hero {
   position: relative;
   background-color: #000;
@@ -53,7 +158,7 @@
     left: 0;
     right: 0;
 
-    background-image: url('../img/janko-ferlic-165856-resize.jpg');
+    background-image: url('../img/janko-ferlic-165856.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: right center;
@@ -216,10 +321,6 @@
 
     &-label {
       position: relative;
-      // display: flex;
-      // align-items: center;
-      // justify-content: center;
-      // flex-direction: column;
       
       flex: 0 0 100%;
 
@@ -260,11 +361,13 @@
   }
 }
 
+// modal
 .swiper-button-next,
 .swiper-button-prev {
   filter: hue-rotate(150deg);  
 }
 
+// footer
 footer {
   display: flex;
   align-items : center;
@@ -274,6 +377,7 @@ footer {
   text-align: center;
 }
 
+// animations
 @keyframes slide-up {
   from {
     top: 100%;
