@@ -5,77 +5,6 @@ const photographers = ['tinapicardphoto','ilonaveresk','andrejosselin','Carlaveg
 const chartColours = ['#fec44f','#fe9929','#FF6138','#cc4c02'];
 
 // chart functions
-function makeBarChart(data, container, width, height) {
-  // build a colour generator - d3 will map data to particular colours
-  let colourGen = d3.scaleOrdinal(chartColours);
-
-  let minMax = d3.extent(data,function(d){ return d.value});
-
-  let yScale = d3.scaleLinear()
-    .domain(minMax)
-    .range([50,250]);
-
-  let chart = d3.select(container)
-  .append("svg")
-    .attr("viewBox", "0 0 " + width + " " + height)
-    .append('g')
-      .attr('transform','translate(15,25)')
-      .attr('id','statsGroup');
-
-  let bars = chart.selectAll('rect').data(data);
-  
-  bars.enter()
-      .append('rect')
-  
-        // set colour
-        .style('fill', function(d,i){ return colourGen(i) })
-        
-        // set initial states for x, y coordinates, width and height
-        .attr('class','bar')
-        .attr('x', function(d,i) { return i * 70 })
-        .attr('y', 250)
-        .attr('width', 50)
-        .attr('height', 0)
-  
-        .transition()
-        .duration(1000)
-  
-        // transition end states
-        .attr('y', function(d) { return 250 - yScale(d.value) })
-        .attr('height', function(d) { return yScale(d.value) });
-  
-  // labels
-  let names = chart.selectAll('.name').data(data);
-  
-  names.enter()
-    .append('text')
-    .style('alignment-baseline', 'hanging')
-    .style('text-anchor', 'middle')
-    .style('font-family', 'Verdana')
-    .style('font-size', '8')
-    .text(function(d){ return d.name})
-    .attr('class','name')
-    .attr('y',255)
-    .attr('x',function(d,i){ return i* 70 + 25});
-
-  // values
-  let values = chart.selectAll('.value').data(data);
-  
-  values.enter()
-    .append('text')
-    .style('alignment-baseline', 'hanging')
-    .style('text-anchor', 'middle')
-    .style('font-family', 'Verdana')
-    .style('font-size', '8')
-    .style('font-weight', 'bold')
-    .style('color','white')
-    .text(function(d){ return d.value.toLocaleString() })
-    .attr('class','value')
-    .attr('y', function(d) { return 260 - yScale(d.value) })
-    .attr('x',function(d,i) { return i* 70 + 25});
-
-}
-
 function makePieChart(data, stat, container, width, height, radius){
   
     let colGen = d3.scaleOrdinal()
@@ -84,7 +13,9 @@ function makePieChart(data, stat, container, width, height, radius){
     // generators
     let pieDataGen = d3.pie()
             .sort(null)
-            .value(function(d){ return d[stat] });
+            .value(function(d){
+              return d[stat];
+            });
 
     let arcGen = d3.arc()
             .outerRadius(radius)
@@ -113,10 +44,14 @@ function makePieChart(data, stat, container, width, height, radius){
       .data(pieData)
       .enter()
       .append('path')
-      .attr('id',function(d,i){ return 'arc'+i})
+      .attr('id',function(d,i){
+        return 'arc' + i;
+      })
       .attr('class','arc')
       .attr('d',arcGen)
-      .style('fill',function(d){ return colGen(d.data.name) })
+      .style('fill',function(d){
+        return colGen(d.data.name);
+      })
       .on("mouseover", function(d) {
         d3.select(this).transition()
           .duration(300)
@@ -138,8 +73,12 @@ function makePieChart(data, stat, container, width, height, radius){
       .style('font-family','Verdana')
       .style('font-size','12')
       .attr('class','chart__label')
-      .attr('transform',function(d){ return `translate(${arcLabelGen.centroid(d)})` })
-      .text(function(d){ return d.value.toLocaleString() });
+      .attr('transform',function(d){
+        return `translate(${arcLabelGen.centroid(d)})`;
+      })
+      .text(function(d){
+        return d.value.toLocaleString();
+      });
 
     // title 
     pie.append('text')
@@ -176,7 +115,7 @@ $(function() {
   if ($('#profile').exists()) {
 
     // template functions
-    function setUserTemplate() {
+    let setUserTemplate = function setUserTemplate() {
       let user = JSON.parse(sessionStorage.getItem('behanceUser'));
 
       let hero = heroTemplate(user);
@@ -184,18 +123,18 @@ $(function() {
     
       let aboutBlurb = blurbTemplate(user);
       $('.blurb').append(aboutBlurb);
-    }
+    };
 
-    function setProjectsTemplate() {
+    let setProjectsTemplate = function setProjectsTemplate() {
       let projects = JSON.parse(sessionStorage.getItem('behanceUserProjects'));
 
       projects.forEach((project) => {
         let listItem = projectListTemplate(project);
         $('.projects').append(listItem);
       });
-    }
+    };
 
-    function setProjectDetailsTemplate(projectid, container) {
+    let setProjectDetailsTemplate = function setProjectDetailsTemplate(projectid, container) {
       let $container = container;
       $container.empty();
 
@@ -204,22 +143,22 @@ $(function() {
       let output = modalTemplate(project);
 
       $container.append(output);
-    }
+    };
     
-    function setChart(stat) {
+    let setChart = function setChart(stat) {
       let chartData = JSON.parse(sessionStorage.getItem('behanceStats'));
 
       makePieChart(chartData, stat, `#${stat}Chart`, 250, 250, 100);
-    }
+    };
 
-    function setLegend() {
+    let setLegend = function setLegend() {
       let legendData = JSON.parse(sessionStorage.getItem('behanceStats'));
 
       let $legend = $('.legend');
       legendData.forEach(function(d, i) {
         $legend.append(`<li style="background-color: ${chartColours[i]};></div> <span class="legend__text">${d.name}</span></li>`);
       });
-    }
+    };
     
     // Template7 templates
     let heroHTML = $('#hero-template').text();
@@ -371,7 +310,7 @@ $(function() {
         nextButton: '.swiper-button-next',
         prevButton: '.swiper-button-prev',
         autoHeight: true
-      })
+      });
     });
 
     let $spans = $('.card-link span');

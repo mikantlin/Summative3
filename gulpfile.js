@@ -1,17 +1,22 @@
 'use strict';
  
 const gulp = require('gulp');
-const sass = require('gulp-sass');
+
+// css plugins
 const sourcemaps = require('gulp-sourcemaps');
+const sass = require('gulp-sass');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
+
+// browser plugin
 const browserSync = require('browser-sync').create();
 
-gulp.task('sass', function () {
+// tasks
+gulp.task('sass', () => {
   return gulp.src('./sass/styles.scss')
     .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
-    // .pipe(postcss([autoprefixer()]))
+    .pipe(postcss([autoprefixer()]))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./css'))
     .pipe(browserSync.reload({
