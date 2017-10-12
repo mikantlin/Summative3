@@ -133,11 +133,17 @@
           <div class="swiper-wrapper">
             <!-- Slides -->
             {{#each modules}}
-              {{#js_if "this.type === 'image'"}}
                 <div class="swiper-slide d-flex align-items-center">
-                  <img src="{{src}}" class="img-fluid mx-auto" alt="{{../name}} - {{@index}}">
-                </div>
-              {{/js_if}}
+                  {{#js_if "this.type === 'image'"}}
+                    <img src="{{src}}" class="img-fluid mx-auto" alt="{{../name}} - {{@index}}">
+                  {{/js_if}}
+                  {{#js_if "this.type === 'text'"}}
+                  <div class="modal__text">
+                      <!-- <img src="{{../../covers['404']}}" class="img-fluid mx-auto mb-3" alt="{{../../name}}"> -->
+                      {{text}}
+                    </div>
+                {{/js_if}}
+              </div>
             {{/each}}
           </div>
           

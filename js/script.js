@@ -134,19 +134,22 @@ $(function() {
       });
 
       let $spans = $('.card-link span');
+
       $spans.each(function(){
         $(this).parent().css({
         'height': ($(this).height() + 2) + 'px',
         'position':'relative',
         'overflow':'hidden'
         });
+
+        $(this).css({
+          'position':'absolute',
+          'top': '0',
+          'left': '0',
+          'right': '0'
+        });  
       });
-      $spans.css({
-        'position':'absolute',
-        'top': '0',
-        'left': '0',
-        'right': '0'
-      });
+
       $('.card-link').hover(function() {
         $(this).find('span').toggleClass('show');
       });
@@ -161,6 +164,7 @@ $(function() {
       let output = modalTemplate(project);
 
       $container.append(output);
+
     };
     
     let setChart = function setChart(stat) {
@@ -174,7 +178,7 @@ $(function() {
 
       let $legend = $('.legend');
       legendData.forEach(function(d, i) {
-        $legend.append(`<li style="background-color: ${chartColours[i]};></div> <span class="legend__text">${d.name}</span></li>`);
+        $legend.append(`<li class="legend__box" id="legend${i}" style="background-color: ${chartColours[i]};"><span class="legend__text">${d.name}</span></li>`);
       });
     };
     
@@ -296,7 +300,7 @@ $(function() {
           }
       });
     }
-
+    
     // project modal popup
     $('#portfolioModal').on('show.bs.modal',function(e){
 
@@ -328,7 +332,8 @@ $(function() {
         loop: true,
         nextButton: '.swiper-button-next',
         prevButton: '.swiper-button-prev',
-        autoHeight: true
+        autoHeight: true,
+        grabCursor: true
       });
     });
   }
