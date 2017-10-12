@@ -73,7 +73,8 @@
   }
 
   &--am {
-    background-image: url('/img/sam-burriss-349469.jpg');
+    background-image: url('../img/sam-burriss-349469.jpg');
+    filter: sepia(1) saturate(0);
 
     .profile__overlay {
       @include profileHover(#6E0DBD, #0DBD3F);     
@@ -81,7 +82,7 @@
   }
 
   &--archen {
-    background-image: url('/img/andrew-robles-300868.jpg');
+    background-image: url('../img/andrew-robles-300868.jpg');
 
     .profile__overlay {
       @include profileHover(#DB1E0D, #C4F000);     
@@ -89,7 +90,7 @@
   }
 
   &--mike {
-    background-image: url('/img/janko-ferlic-165856.jpg');
+    background-image: url('../img/janko-ferlic-165856.jpg');
 
     .profile__overlay {
       @include profileHover(#FF6138, rebeccapurple);     
@@ -97,7 +98,7 @@
   }
 
   &--zame {
-    background-image: url('/img/ivana-cajina-322968.jpg');
+    background-image: url('../img/ivana-cajina-322968.jpg');
 
     .profile__overlay {
       @include profileHover(#02AAF7, yellow);     

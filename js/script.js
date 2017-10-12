@@ -132,6 +132,24 @@ $(function() {
         let listItem = projectListTemplate(project);
         $('.projects').append(listItem);
       });
+
+      let $spans = $('.card-link span');
+      $spans.each(function(){
+        $(this).parent().css({
+        'height': ($(this).height() + 2) + 'px',
+        'position':'relative',
+        'overflow':'hidden'
+        });
+      });
+      $spans.css({
+        'position':'absolute',
+        'top': '0',
+        'left': '0',
+        'right': '0'
+      });
+      $('.card-link').hover(function() {
+        $(this).find('span').toggleClass('show');
+      });
     };
 
     let setProjectDetailsTemplate = function setProjectDetailsTemplate(projectid, container) {
@@ -205,12 +223,12 @@ $(function() {
       let $player = $('.video iframe');
 
       $player
-      // attach video's aspect ratio
-      .data('aspectRatio', $player.height() / $player.width())
+        // attach video's aspect ratio
+        .data('aspectRatio', $player.height() / $player.width())
 
-      // and remove the hardcoded width/height
-      .removeAttr('height')
-      .removeAttr('width');
+        // and remove the hardcoded width/height
+        .removeAttr('height')
+        .removeAttr('width');
 
       $(window).resize(function() {
         
@@ -232,6 +250,7 @@ $(function() {
       setChart('views');
       setChart('appreciations');
       setChart('followers');
+      setChart('comments');
     } else {
       // make the api call for each photographer
       photographers.forEach(function(photographer) {
@@ -311,24 +330,6 @@ $(function() {
         prevButton: '.swiper-button-prev',
         autoHeight: true
       });
-    });
-
-    let $spans = $('.card-link span');
-    $spans.each(function(){
-      $(this).parent().css({
-      'height': ($(this).height() + 2) + 'px',
-      'position':'relative',
-      'overflow':'hidden'
-      });
-    });
-    $spans.css({
-      'position':'absolute',
-      'top': '0',
-      'left': '0',
-      'right': '0'
-    });
-    $('.card-link').hover(function() {
-      $(this).find('span').toggleClass('show');
     });
   }
 
