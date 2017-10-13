@@ -13,7 +13,7 @@ const browserSync = require('browser-sync').create();
 
 // tasks
 gulp.task('sass', () => {
-  return gulp.src('./sass/styles.scss')
+  return gulp.src('./sass/*.scss')
     .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
     .pipe(postcss([autoprefixer()]))
