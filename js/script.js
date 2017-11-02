@@ -282,6 +282,7 @@ $(function() {
         setChart('views');
         setChart('appreciations');
         setChart('followers');
+        setChart('comments');
       });
     }
 
